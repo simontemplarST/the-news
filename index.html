@@ -500,51 +500,91 @@ function parseOPML(xml) {
   return out;
 }
 
-// ── FETCH ALL FEEDS ─────────────────────────────────────────
-async function fetchFeeds(list) {
-  items = [];
-  let done = 0, errs = 0;
-  document.getElementById('progress-wrap').style.display = 'flex';
-  progress(0);
+// ── CACHE ────────────────────────────────────────────────────
+const CACHE_KEY = 'thenews_cache';
+const CACHE_TTL = 30 * 60 * 1000; // 30 minutes
 
-  const BATCH = 5;
+function saveCache(feedItems) {
+  try {
+    localStorage.setItem(CACHE_KEY, JSON.stringify({
+      ts: Date.now(),
+      items: feedItems.map(i => ({ ...i, date: i.date.getTime() }))
+    }));
+  } catch(e) {}
+}
+
+function loadCache() {
+  try {
+    const raw = localStorage.getItem(CACHE_KEY);
+    if (!raw) return null;
+    const { ts, items: cached } = JSON.parse(raw);
+    if (Date.now() - ts > CACHE_TTL) return null;
+    return cached.map(i => ({ ...i, date: new Date(i.date) }));
+  } catch(e) { return null; }
+}
+
+// ── FETCH ALL FEEDS ─────────────────────────────────────────
+async function fetchFeeds(list, background = false) {
+  if (!background) items = [];
+  let done = 0, errs = 0;
+  if (!background) {
+    document.getElementById('progress-wrap').style.display = 'flex';
+    progress(0);
+  }
+
+  const fresh = [];
+  const BATCH = 10;
   for (let i = 0; i < list.length; i += BATCH) {
     await Promise.all(list.slice(i, i + BATCH).map(async feed => {
       try {
-        status('LOADING: ' + feed.title);
+        if (!background) status('LOADING: ' + feed.title);
         const result = await fetchFeed(feed.url);
-        if (result.json) {
-          parseRSS2JSON(result.json, feed.title).forEach(it => items.push(it));
-        } else {
-          parseRSS(result.xml, feed.title).forEach(it => items.push(it));
-        }
+        const parsed = result.json
+          ? parseRSS2JSON(result.json, feed.title)
+          : parseRSS(result.xml, feed.title);
+        parsed.forEach(it => { fresh.push(it); if (!background) items.push(it); });
       } catch(e) {
         errs++;
       }
       done++;
-      progress(Math.round(done / list.length * 100));
-      if (items.length > 0) {
-        document.getElementById('filter-row').style.display = 'flex';
-        render();
+      if (!background) {
+        progress(Math.round(done / list.length * 100));
+        if (items.length > 0) {
+          document.getElementById('filter-row').style.display = 'flex';
+          render();
+        }
       }
     }));
   }
 
-  document.getElementById('progress-wrap').style.display = 'none';
-  document.getElementById('loading-strip').style.display = 'none';
+  if (!background) {
+    document.getElementById('progress-wrap').style.display = 'none';
+    document.getElementById('loading-strip').style.display = 'none';
+    populateSourceFilter();
+    document.getElementById('filter-row').style.display = 'flex';
+    render();
+    status(`${items.length} ARTICLES FROM ${list.length} FEEDS${errs ? ' | ' + errs + ' ERRORS' : ''}`);
+  } else {
+    // background refresh: swap in new items and re-render silently
+    items = fresh;
+    populateSourceFilter();
+    render();
+    status(`${items.length} ARTICLES — refreshed ${new Date().toLocaleTimeString()}`);
+  }
 
-  // populate source filter
+  saveCache(fresh.length ? fresh : items);
+}
+
+function populateSourceFilter() {
   const sel = document.getElementById('src-sel');
+  const current = sel.value;
   sel.innerHTML = '<option value="">all</option>';
   [...new Set(items.map(i => i.source))].sort().forEach(s => {
     const o = document.createElement('option');
     o.value = o.textContent = s;
     sel.appendChild(o);
   });
-
-  document.getElementById('filter-row').style.display = 'flex';
-  render();
-  status(`${items.length} ARTICLES FROM ${list.length} FEEDS${errs ? ' | ' + errs + ' ERRORS' : ''}`);
+  sel.value = current;
 }
 
 // ── PARSE rss2json response ──────────────────────────────────
@@ -686,18 +726,32 @@ function toggleCustom() {
 }
 
 async function reloadDefaults() {
+  localStorage.removeItem(CACHE_KEY);
   document.getElementById('load-bar').style.display = 'none';
-  document.getElementById('loading-strip').style.display = 'flex';
+  document.getElementById('loading-strip').style.display = 'block';
   document.getElementById('progress-wrap').style.display = 'flex';
   document.getElementById('filter-row').style.display = 'none';
-  await fetchFeeds(DEFAULT_FEEDS);
+  await fetchFeeds(DEFAULT_FEEDS, false);
 }
 
 // ── AUTO-LOAD ───────────────────────────────────────────────
 window.addEventListener('DOMContentLoaded', () => {
-  // Hide the big form, show just progress inline under masthead
   document.getElementById('load-bar').style.display = 'none';
-  fetchFeeds(DEFAULT_FEEDS);
+
+  const cached = loadCache();
+  if (cached) {
+    // Instant render from cache
+    items = cached;
+    populateSourceFilter();
+    document.getElementById('filter-row').style.display = 'flex';
+    document.getElementById('loading-strip').style.display = 'none';
+    render();
+    status(`${items.length} ARTICLES (cached) — refreshing in background...`);
+    // Refresh in background without blocking UI
+    fetchFeeds(DEFAULT_FEEDS, true);
+  } else {
+    fetchFeeds(DEFAULT_FEEDS, false);
+  }
 });
 </script>
 </body>
