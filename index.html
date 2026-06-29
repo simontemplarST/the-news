@@ -355,57 +355,74 @@ const CORS_PROXIES = [
 
 // Default full-text feeds — auto-loaded on start
 const DEFAULT_FEEDS = [
-  // World & International
-  { title: 'Al Jazeera',         url: 'https://www.aljazeera.com/xml/rss/all.xml' },
-  { title: 'Deutsche Welle',     url: 'https://rss.dw.com/rdf/rss-en-all' },
-  { title: 'Reuters World',      url: 'https://feeds.reuters.com/Reuters/worldNews' },
+  // Austin MN & Mower County
+  { title: 'Austin MN — Local News',    url: 'https://news.google.com/rss/search?q=%22Austin%2C+Minnesota%22+OR+%22Mower+County%22+OR+%22Austin+MN%22&hl=en-US&gl=US&ceid=US:en' },
+  { title: 'Austin MN — Hormel / SPAM', url: 'https://news.google.com/rss/search?q=Hormel+Foods+Austin+Minnesota&hl=en-US&gl=US&ceid=US:en' },
 
-  // US News & Politics
-  { title: 'ProPublica',         url: 'https://feeds.propublica.org/propublica/main' },
-  { title: 'The Intercept',      url: 'https://theintercept.com/feed/?rss' },
-  { title: 'Reason',             url: 'https://reason.com/feed/' },
-  { title: 'Common Dreams',      url: 'https://www.commondreams.org/rss.xml' },
-  { title: 'The Nation',         url: 'https://www.thenation.com/feed/?type=article' },
+  // Minnesota
+  { title: 'MPR News',              url: 'https://www.mprnews.org/feed/homepage' },
+  { title: 'MN Reformer',           url: 'https://minnesotareformer.com/feed/' },
+  { title: 'Alpha News MN',         url: 'https://alphanews.org/feed/' },
+
+  // World & International
+  { title: 'Al Jazeera',            url: 'https://www.aljazeera.com/xml/rss/all.xml' },
+  { title: 'Deutsche Welle',        url: 'https://rss.dw.com/rdf/rss-en-all' },
+  { title: 'Reuters World',         url: 'https://feeds.reuters.com/Reuters/worldNews' },
+
+  // US News & Politics — Left
+  { title: 'ProPublica',            url: 'https://feeds.propublica.org/propublica/main' },
+  { title: 'The Intercept',         url: 'https://theintercept.com/feed/?rss' },
+  { title: 'The Nation',            url: 'https://www.thenation.com/feed/?type=article' },
+  { title: 'Common Dreams',         url: 'https://www.commondreams.org/rss.xml' },
+
+  // US News & Politics — Right
+  { title: 'Washington Examiner',   url: 'https://www.washingtonexaminer.com/feed/' },
+  { title: 'The Federalist',        url: 'https://thefederalist.com/feed/' },
+  { title: 'National Review',       url: 'https://www.nationalreview.com/feed/' },
+  { title: 'The Daily Signal',      url: 'https://www.dailysignal.com/feed/' },
+
+  // US News & Politics — Libertarian
+  { title: 'Reason',                url: 'https://reason.com/feed/' },
 
   // Science
-  { title: 'Quanta Magazine',    url: 'https://www.quantamagazine.org/feed/' },
-  { title: 'Phys.org',           url: 'https://phys.org/rss-feed/' },
-  { title: 'Science Daily',      url: 'https://www.sciencedaily.com/rss/all.xml' },
+  { title: 'Quanta Magazine',       url: 'https://www.quantamagazine.org/feed/' },
+  { title: 'Phys.org',              url: 'https://phys.org/rss-feed/' },
+  { title: 'Science Daily',         url: 'https://www.sciencedaily.com/rss/all.xml' },
 
   // Health & Medicine
-  { title: 'STAT News',          url: 'https://www.statnews.com/feed/' },
+  { title: 'STAT News',             url: 'https://www.statnews.com/feed/' },
 
   // Climate & Environment
-  { title: 'Grist',              url: 'https://grist.org/feed/' },
-  { title: 'Yale E360',          url: 'https://e360.yale.edu/rss.xml' },
-  { title: 'Inside Climate News', url: 'https://insideclimatenews.org/feed/' },
+  { title: 'Grist',                 url: 'https://grist.org/feed/' },
+  { title: 'Yale E360',             url: 'https://e360.yale.edu/rss.xml' },
+  { title: 'Inside Climate News',   url: 'https://insideclimatenews.org/feed/' },
 
   // Business & Economics
-  { title: 'Naked Capitalism',   url: 'https://www.nakedcapitalism.com/feed' },
+  { title: 'Naked Capitalism',      url: 'https://www.nakedcapitalism.com/feed' },
 
   // Technology
-  { title: 'Ars Technica',       url: 'https://feeds.arstechnica.com/arstechnica/index' },
-  { title: 'Techdirt',           url: 'https://www.techdirt.com/techdirt_rss.xml' },
-  { title: '404 Media',          url: 'https://www.404media.co/rss/' },
-  { title: 'Hacker News',        url: 'https://news.ycombinator.com/rss' },
-  { title: 'Slashdot',           url: 'http://rss.slashdot.org/Slashdot/slashdotMain' },
-  { title: 'The Register',       url: 'https://www.theregister.com/headlines.atom' },
+  { title: 'Ars Technica',          url: 'https://feeds.arstechnica.com/arstechnica/index' },
+  { title: 'Techdirt',              url: 'https://www.techdirt.com/techdirt_rss.xml' },
+  { title: '404 Media',             url: 'https://www.404media.co/rss/' },
+  { title: 'Hacker News',           url: 'https://news.ycombinator.com/rss' },
+  { title: 'Slashdot',              url: 'http://rss.slashdot.org/Slashdot/slashdotMain' },
+  { title: 'The Register',          url: 'https://www.theregister.com/headlines.atom' },
 
   // Security & Privacy
-  { title: 'Schneier on Security', url: 'https://www.schneier.com/feed/atom/' },
-  { title: 'EFF Deeplinks',      url: 'https://www.eff.org/rss/updates.xml' },
-  { title: 'Krebs on Security',  url: 'https://krebsonsecurity.com/feed/' },
-  { title: 'Bellingcat',         url: 'https://www.bellingcat.com/feed/' },
+  { title: 'Schneier on Security',  url: 'https://www.schneier.com/feed/atom/' },
+  { title: 'EFF Deeplinks',         url: 'https://www.eff.org/rss/updates.xml' },
+  { title: 'Krebs on Security',     url: 'https://krebsonsecurity.com/feed/' },
+  { title: 'Bellingcat',            url: 'https://www.bellingcat.com/feed/' },
 
   // Culture, Arts & Ideas
-  { title: 'Literary Hub',       url: 'https://lithub.com/feed/' },
-  { title: 'Boing Boing',        url: 'https://boingboing.net/feed' },
-  { title: 'Pluralistic',        url: 'https://pluralistic.net/feed/' },
-  { title: 'Kottke',             url: 'https://feeds.kottke.org/main' },
-  { title: 'Daring Fireball',    url: 'https://daringfireball.net/feeds/articles' },
+  { title: 'Literary Hub',          url: 'https://lithub.com/feed/' },
+  { title: 'Boing Boing',           url: 'https://boingboing.net/feed' },
+  { title: 'Pluralistic',           url: 'https://pluralistic.net/feed/' },
+  { title: 'Kottke',                url: 'https://feeds.kottke.org/main' },
+  { title: 'Daring Fireball',       url: 'https://daringfireball.net/feeds/articles' },
 
   // Sports
-  { title: 'Defector',           url: 'https://defector.com/feed' },
+  { title: 'Defector',              url: 'https://defector.com/feed' },
 ];
 
 // ── MAIN ENTRY ─────────────────────────────────────────────
