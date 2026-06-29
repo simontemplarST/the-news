@@ -2,350 +2,324 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>THE NEWS</title>
 <style>
+:root {
+  --bg: #f4f0e8;
+  --ink: #14110c;
+  --muted: #6b6256;
+  --faint: #a39888;
+  --rule: #d8cfbe;
+  --rule-strong: #c2b6a0;
+  --accent: #990000;
+  --link: #1a3a6b;
+  --link-visited: #6a4a7a;
+  --paper: #fbf8f1;
+  --lean-L: #1c4f9c;
+  --lean-R: #9e1b1b;
+  --lean-C: #8a8175;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
 body {
-  background: #f4f0e8;
-  color: #111111;
-  font-family: Arial, Helvetica, sans-serif;
-  font-size: 12px;
-  margin: 0;
-  padding: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 15px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
 }
 
-#wrap {
-  max-width: 100%;
-  margin: 0 auto;
-  padding: 8px 24px;
-}
+.mono { font-family: "Courier New", ui-monospace, monospace; }
 
-/* HEADER */
+#wrap { max-width: 1320px; margin: 0 auto; }
+
+/* ── MASTHEAD ───────────────────────────────────── */
 #masthead {
   text-align: center;
-  border-bottom: 2px solid #990000;
-  padding-bottom: 6px;
-  margin-bottom: 8px;
+  padding: 18px 20px 10px;
 }
-
+#masthead .kicker,
+#masthead .ts {
+  font-family: "Courier New", monospace;
+  font-size: 10px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--muted);
+}
 #masthead h1 {
-  font-family: "Times New Roman", Times, serif;
-  font-size: 42px;
-  color: #111111;
-  margin: 0;
-  letter-spacing: 4px;
-  text-transform: uppercase;
-}
-
-#masthead .tagline {
-  font-size: 10px;
-  color: #777777;
+  font-size: clamp(38px, 7vw, 72px);
+  font-weight: 900;
   letter-spacing: 2px;
-  text-transform: uppercase;
-  margin-top: 2px;
-}
-
-#masthead .timestamp {
-  font-size: 11px;
-  color: #555555;
-  margin-top: 4px;
-}
-
-/* LOAD BAR */
-#load-bar {
-  text-align: center;
-  padding: 12px 0;
-  border-bottom: 1px solid #cccccc;
-  margin-bottom: 12px;
-}
-
-#load-bar p {
-  color: #666666;
-  font-size: 11px;
+  line-height: 0.95;
   margin: 4px 0;
+  font-family: Georgia, "Times New Roman", serif;
 }
-
-#opml-url {
-  background: #ffffff;
-  color: #111111;
-  border: 1px solid #bbbbbb;
-  padding: 4px 6px;
-  font-size: 11px;
-  font-family: "Courier New", monospace;
-  width: 340px;
-}
-
-#opml-file {
-  color: #444444;
-  font-size: 11px;
-}
-
-textarea#opml-paste {
-  background: #ffffff;
-  color: #111111;
-  border: 1px solid #bbbbbb;
-  padding: 4px 6px;
-  font-size: 11px;
-  font-family: "Courier New", monospace;
-  width: 340px;
-  height: 60px;
-  resize: vertical;
-  display: block;
-  margin: 4px auto 0;
-}
-
-#load-btn {
-  background: #990000;
-  color: #ffffff;
-  border: none;
-  padding: 5px 18px;
-  font-size: 12px;
-  font-weight: bold;
-  cursor: pointer;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  margin-top: 8px;
-}
-
-#load-btn:hover { background: #cc0000; }
-
-#status-line {
-  color: #666666;
-  font-size: 10px;
-  margin-top: 6px;
-  min-height: 14px;
-}
-
-#progress-wrap {
-  display: none;
+#masthead h1 span { color: var(--accent); }
+#masthead .rule {
+  height: 3px;
+  background: var(--ink);
+  border-bottom: 1px solid var(--ink);
   margin-top: 6px;
 }
 
-#progress-track {
-  background: #dddddd;
-  border: 1px solid #bbbbbb;
-  height: 8px;
-  width: 340px;
+/* ── STICKY NAV ─────────────────────────────────── */
+#navbar {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  background: var(--bg);
+  border-bottom: 2px solid var(--ink);
+}
+#nav {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0;
+  max-width: 1320px;
   margin: 0 auto;
 }
-
-#progress-fill {
-  background: #990000;
-  height: 100%;
-  width: 0%;
-  transition: width 0.2s;
+.tab {
+  font-family: "Courier New", monospace;
+  font-size: 12px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  padding: 9px 16px;
+  background: none;
+  border: none;
+  border-right: 1px solid var(--rule);
+  color: var(--muted);
+  cursor: pointer;
+  white-space: nowrap;
+}
+.tab:hover { color: var(--ink); background: var(--paper); }
+.tab.active {
+  color: var(--bg);
+  background: var(--ink);
+  font-weight: bold;
 }
 
-/* FILTER */
-#filter-row {
-  display: none;
-  text-align: center;
-  padding: 6px 0;
-  border-bottom: 1px solid #cccccc;
-  margin-bottom: 10px;
+/* ── TOOLBAR ────────────────────────────────────── */
+#toolbar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  padding: 8px 20px;
+  border-bottom: 1px solid var(--rule);
+  font-family: "Courier New", monospace;
   font-size: 11px;
-  color: #666666;
+  color: var(--muted);
 }
-
-#filter-row input[type=text] {
-  background: #ffffff;
-  color: #111111;
-  border: 1px solid #bbbbbb;
-  padding: 2px 5px;
-  font-size: 11px;
-  width: 180px;
+#toolbar input[type=text], #toolbar select {
+  font-family: "Courier New", monospace;
+  font-size: 12px;
+  padding: 4px 7px;
+  border: 1px solid var(--rule-strong);
+  background: var(--paper);
+  color: var(--ink);
 }
-
-#filter-row select {
-  background: #ffffff;
-  color: #111111;
-  border: 1px solid #bbbbbb;
-  padding: 2px 4px;
-  font-size: 11px;
+#toolbar input[type=text] { width: 200px; }
+#toolbar input[type=text]:focus, #toolbar select:focus {
+  outline: none;
+  border-color: var(--accent);
 }
-
-#filter-row button {
-  background: #eeeeee;
-  color: #333333;
-  border: 1px solid #bbbbbb;
-  padding: 2px 8px;
+.tbtn {
+  font-family: "Courier New", monospace;
   font-size: 11px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border: 1px solid var(--rule-strong);
+  background: var(--paper);
+  color: var(--ink);
   cursor: pointer;
 }
+.tbtn:hover { background: var(--ink); color: var(--bg); }
+#status { margin-left: auto; color: var(--faint); font-size: 10px; max-width: 360px; text-align: right; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
-#filter-row button:hover { background: #dddddd; }
-
-/* THREE COLUMN LAYOUT */
-#columns {
-  display: flex;
-  gap: 0;
-  align-items: flex-start;
+/* progress */
+#progress-track {
+  height: 2px;
+  background: var(--rule);
+  width: 100%;
+}
+#progress-fill {
+  height: 100%;
+  width: 0;
+  background: var(--accent);
+  transition: width .25s;
 }
 
-.col {
-  flex: 1;
-  padding: 0 10px;
-  border-right: 1px solid #dddddd;
-}
+/* ── CONTENT ────────────────────────────────────── */
+#view { padding: 16px 20px 40px; }
 
-.col:first-child { padding-left: 0; }
-.col:last-child { border-right: none; }
+/* lean dot */
+.dot { display: inline-block; width: 7px; height: 7px; border-radius: 50%; vertical-align: middle; margin-right: 5px; }
+.dot-L { background: var(--lean-L); }
+.dot-R { background: var(--lean-R); }
+.dot-C { background: var(--lean-C); }
 
-/* SECTION */
-.section-head {
-  color: #990000;
+/* story row */
+.story { display: block; text-decoration: none; padding: 7px 0; border-bottom: 1px solid var(--rule); }
+.story:hover .head { color: var(--accent); }
+.story .meta {
+  font-family: "Courier New", monospace;
   font-size: 10px;
-  font-weight: bold;
+  letter-spacing: .5px;
   text-transform: uppercase;
-  letter-spacing: 2px;
-  border-bottom: 1px solid #990000;
-  padding-bottom: 2px;
-  margin: 10px 0 4px;
+  color: var(--muted);
+  display: block;
+  margin-bottom: 1px;
 }
+.story .head { color: var(--ink); font-size: 15px; line-height: 1.32; }
+.story .new { color: var(--accent); font-weight: bold; }
 
-.section-head:first-child { margin-top: 0; }
-
-/* LINKS */
-.item {
-  padding: 2px 0;
-  line-height: 1.4;
-  border-bottom: 1px dotted #dddddd;
-}
-
-.item a {
-  color: #000099;
-  text-decoration: none;
+/* source block (category views) */
+#view.cols .block { break-inside: avoid; margin-bottom: 22px; }
+#view.cols { columns: 330px; column-gap: 34px; }
+.block h3 {
+  font-family: "Courier New", monospace;
   font-size: 12px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--accent);
+  border-bottom: 2px solid var(--accent);
+  padding-bottom: 3px;
+  margin-bottom: 4px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
 }
-
-.item a:hover {
-  color: #cc0000;
-  text-decoration: underline;
-}
-
-.item a:visited {
-  color: #551a8b;
-}
-
-.item .age {
-  color: #999999;
+.block .more {
+  font-family: "Courier New", monospace;
   font-size: 10px;
+  color: var(--faint);
+  text-decoration: none;
+  margin-top: 4px;
+  display: inline-block;
 }
+.block .more:hover { color: var(--accent); }
 
-/* TOP STORIES */
-.item.top a {
-  color: #111111;
-  font-size: 14px;
-  font-weight: bold;
-}
+/* TOP layout */
+.lead { margin-bottom: 18px; padding-bottom: 12px; border-bottom: 3px double var(--ink); }
+.lead a { text-decoration: none; display: block; padding: 8px 0; border-bottom: 1px solid var(--rule); }
+.lead a:first-child { padding-top: 0; }
+.lead a:hover .head { color: var(--accent); }
+.lead .meta { font-family: "Courier New", monospace; font-size: 10px; letter-spacing: .5px; text-transform: uppercase; color: var(--muted); }
+.lead a:nth-child(1) .head { font-size: 30px; font-weight: 900; line-height: 1.08; }
+.lead a:nth-child(2) .head,
+.lead a:nth-child(3) .head { font-size: 21px; font-weight: 700; line-height: 1.15; }
+.lead .head { color: var(--ink); }
+#top-rest { columns: 300px; column-gap: 30px; }
+#top-rest .story { break-inside: avoid; }
 
-.item.top a:hover { color: #cc0000; }
-
-/* BREAKING */
-.item.breaking a {
-  color: #cc0000;
-  font-weight: bold;
-}
-
-/* HR */
-hr {
-  border: none;
-  border-top: 1px solid #cccccc;
-  margin: 8px 0;
-}
-
-/* FOOTER */
-#footer {
-  text-align: center;
-  border-top: 1px solid #cccccc;
-  padding: 8px 0;
-  margin-top: 14px;
-  font-size: 10px;
-  color: #999999;
-}
-
-#footer a { color: #666688; }
-
-/* EMPTY */
-#empty {
-  text-align: center;
-  color: #999999;
-  padding: 30px 0;
+/* POLITICS split */
+#view.split { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; }
+.lane { padding: 0 18px; border-right: 1px solid var(--rule); }
+.lane:first-child { padding-left: 0; }
+.lane:last-child { border-right: none; padding-right: 0; }
+.lane-head {
+  font-family: "Courier New", monospace;
   font-size: 13px;
-  display: none;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  font-weight: bold;
+  text-align: center;
+  padding: 6px;
+  margin-bottom: 12px;
+  color: #fff;
+}
+.lane-L .lane-head { background: var(--lean-L); }
+.lane-C .lane-head { background: var(--lean-C); }
+.lane-R .lane-head { background: var(--lean-R); }
+.lane .block h3 { color: var(--ink); border-bottom-color: var(--rule-strong); }
+
+#empty { text-align: center; padding: 60px 20px; color: var(--faint); font-family: "Courier New", monospace; }
+
+/* custom OPML panel */
+#load-bar { display: none; padding: 16px 20px; border-bottom: 1px solid var(--rule); background: var(--paper); text-align: center; }
+#load-bar p { font-size: 12px; color: var(--muted); margin-bottom: 8px; }
+#load-bar input[type=text], #load-bar textarea {
+  font-family: "Courier New", monospace; font-size: 12px; padding: 5px 7px;
+  border: 1px solid var(--rule-strong); background: #fff; color: var(--ink); width: 360px; max-width: 90%;
+}
+#load-bar textarea { height: 70px; display: block; margin: 6px auto; resize: vertical; }
+
+/* footer */
+#footer { text-align: center; padding: 18px 20px 30px; border-top: 2px solid var(--ink); font-family: "Courier New", monospace; font-size: 10px; color: var(--faint); letter-spacing: 1px; }
+#footer a { color: var(--muted); }
+.legend { display: inline-flex; gap: 14px; margin-top: 6px; }
+
+@media (max-width: 760px) {
+  #view.split { grid-template-columns: 1fr; }
+  .lane { padding: 0; border-right: none; border-bottom: 1px solid var(--rule); margin-bottom: 14px; padding-bottom: 8px; }
+  #status { display: none; }
 }
 </style>
 </head>
 <body>
 <div id="wrap">
 
-  <div id="masthead">
-    <h1>THE NEWS</h1>
-    <div class="tagline">World Wide Web Edition</div>
-    <div class="timestamp" id="ts"></div>
+  <header id="masthead">
+    <div class="kicker">World Wide Web Edition &middot; All The News That Syndicates</div>
+    <h1>THE <span>NEWS</span></h1>
+    <div class="ts" id="ts"></div>
+    <div class="rule"></div>
+  </header>
+
+  <div id="navbar">
+    <nav id="nav"></nav>
+    <div id="progress-track"><div id="progress-fill"></div></div>
   </div>
 
-  <!-- LOADING STRIP (shown during auto-load) -->
-  <div id="loading-strip" style="text-align:center; padding:8px 0; border-bottom:1px solid #333; margin-bottom:10px; font-size:11px; color:#888888;">
-    <div id="status-line">LOADING FEEDS...</div>
-    <div id="progress-wrap" style="margin-top:4px;">
-      <div id="progress-track"><div id="progress-fill"></div></div>
+  <div id="toolbar">
+    <input type="text" id="q" placeholder="search headlines..." oninput="render()">
+    <select id="src-sel" onchange="render()"><option value="">all sources</option></select>
+    <button class="tbtn" onclick="reloadDefaults()">&#8635; refresh</button>
+    <button class="tbtn" onclick="toggleCustom()">+ OPML</button>
+    <span class="mono" id="count-lbl"></span>
+    <span id="status"></span>
+  </div>
+
+  <div id="load-bar">
+    <p>LOAD A CUSTOM OPML &mdash; FILE, URL, OR PASTE</p>
+    <input type="file" id="opml-file" accept=".opml,.xml"><br>
+    <input type="text" id="opml-url" placeholder="https://example.com/feeds.opml"><br>
+    <textarea id="opml-paste" placeholder="...or paste OPML XML here"></textarea><br>
+    <button class="tbtn" onclick="go()">LOAD</button>
+  </div>
+
+  <main id="view"></main>
+  <div id="empty" style="display:none;">[ NO ARTICLES MATCH ]</div>
+
+  <footer id="footer">
+    <div>&copy; <span id="yr"></span> THE NEWS &mdash; AGGREGATED FROM ORIGINAL SOURCES &mdash; <a href="mailto:webmaster@thenews.invalid">WEBMASTER</a></div>
+    <div class="legend">
+      <span><span class="dot dot-L"></span>LEFT</span>
+      <span><span class="dot dot-C"></span>CENTER</span>
+      <span><span class="dot dot-R"></span>RIGHT</span>
     </div>
-  </div>
-
-  <!-- CUSTOM OPML PANEL (hidden until user clicks) -->
-  <div id="load-bar" style="display:none; text-align:center; padding:10px 0; border-bottom:1px solid #333; margin-bottom:10px;">
-    <p style="color:#888; font-size:11px; margin-bottom:6px;">LOAD OPML FILE &nbsp;|&nbsp; URL &nbsp;|&nbsp; OR PASTE XML</p>
-    <input type="file" id="opml-file" accept=".opml,.xml">
-    <br><br>
-    <input type="text" id="opml-url" placeholder="http://example.com/feeds.opml">
-    <br>
-    <textarea id="opml-paste" placeholder="...or paste OPML XML here"></textarea>
-    <br>
-    <button id="load-btn" onclick="go()">LOAD FEEDS</button>
-  </div>
-
-  <!-- FILTER -->
-  <div id="filter-row">
-    SEARCH: <input type="text" id="q" oninput="render()" placeholder="filter...">
-    &nbsp; SOURCE: <select id="src-sel" onchange="render()"><option value="">all</option></select>
-    &nbsp; <button onclick="document.getElementById('q').value='';document.getElementById('src-sel').value='';render()">clear</button>
-    &nbsp; <button onclick="reloadDefaults()">&#8635; refresh</button>
-    &nbsp; <button onclick="toggleCustom()">load custom OPML</button>
-    &nbsp; <span id="count-lbl" style="color:#666666;"></span>
-  </div>
-
-  <!-- NEWS COLUMNS -->
-  <div id="columns">
-    <div class="col" id="col-left"></div>
-    <div class="col" id="col-mid"></div>
-    <div class="col" id="col-right"></div>
-    <div class="col" id="col-far"></div>
-  </div>
-
-  <div id="empty">[ NO ARTICLES MATCH ]</div>
-
-  <div id="footer">
-    &copy; <span id="yr"></span> THE NEWS &mdash; ALL CONTENT FROM ORIGINAL SOURCES &mdash;
-    <a href="mailto:webmaster@thenews.invalid">WEBMASTER</a>
-  </div>
+  </footer>
 
 </div>
 
 <script>
-// timestamp
+// ── CLOCK ──────────────────────────────────────────
 function tick() {
-  const d = new Date();
-  document.getElementById('ts').textContent =
-    d.toLocaleString('en-US', { weekday:'long', year:'numeric', month:'long', day:'numeric',
-      hour:'2-digit', minute:'2-digit', second:'2-digit' }).toUpperCase();
+  document.getElementById('ts').textContent = new Date().toLocaleString('en-US',
+    { weekday:'long', month:'long', day:'numeric', year:'numeric',
+      hour:'2-digit', minute:'2-digit' }).toUpperCase();
 }
-tick();
-setInterval(tick, 1000);
+tick(); setInterval(tick, 30000);
 document.getElementById('yr').textContent = new Date().getFullYear();
 
-// state
+// ── STATE ──────────────────────────────────────────
 let items = [];
 let feeds = [];
+let currentCat = 'top';
 
 const RSS2JSON = 'https://api.rss2json.com/v1/api.json?rss_url=';
 const CORS_PROXIES = [
@@ -353,117 +327,117 @@ const CORS_PROXIES = [
   url => `https://api.allorigins.win/get?url=${encodeURIComponent(url)}`,
 ];
 
-// Default full-text feeds — auto-loaded on start
+// ── FEEDS ──────────────────────────────────────────
+// cat: tab bucket. lean: L | C | R (drives Politics split + dot)
 const DEFAULT_FEEDS = [
-  // Austin MN & Mower County
-  { title: 'Austin MN — Local News',    url: 'https://news.google.com/rss/search?q=%22Austin%2C+Minnesota%22+OR+%22Mower+County%22+OR+%22Austin+MN%22&hl=en-US&gl=US&ceid=US:en' },
-  { title: 'Austin MN — Hormel / SPAM', url: 'https://news.google.com/rss/search?q=Hormel+Foods+Austin+Minnesota&hl=en-US&gl=US&ceid=US:en' },
+  // Austin MN & Minnesota
+  { title: 'Austin MN Local',     cat: 'local', url: 'https://news.google.com/rss/search?q=%22Austin%2C+Minnesota%22+OR+%22Mower+County%22+OR+%22Austin+MN%22&hl=en-US&gl=US&ceid=US:en' },
+  { title: 'Hormel / SPAM',       cat: 'local', url: 'https://news.google.com/rss/search?q=Hormel+Foods+Austin+Minnesota&hl=en-US&gl=US&ceid=US:en' },
+  { title: 'MPR News',            cat: 'local', lean: 'C', url: 'https://www.mprnews.org/feed/homepage' },
+  { title: 'MN Reformer',         cat: 'local', lean: 'L', url: 'https://minnesotareformer.com/feed/' },
+  { title: 'Alpha News MN',       cat: 'local', lean: 'R', url: 'https://alphanews.org/feed/' },
 
-  // Minnesota
-  { title: 'MPR News',              url: 'https://www.mprnews.org/feed/homepage' },
-  { title: 'MN Reformer',           url: 'https://minnesotareformer.com/feed/' },
-  { title: 'Alpha News MN',         url: 'https://alphanews.org/feed/' },
+  // Headlines — straight news (with lean dots)
+  { title: 'BBC News',            cat: 'news', lean: 'C', url: 'https://feeds.bbci.co.uk/news/world/rss.xml' },
+  { title: 'Al Jazeera',          cat: 'news', lean: 'C', url: 'https://www.aljazeera.com/xml/rss/all.xml' },
+  { title: 'Deutsche Welle',      cat: 'news', lean: 'C', url: 'https://rss.dw.com/rdf/rss-en-all' },
+  { title: 'NPR News',            cat: 'news', lean: 'L', url: 'https://feeds.npr.org/1001/rss.xml' },
+  { title: 'New York Times',      cat: 'news', lean: 'L', url: 'https://rss.nytimes.com/services/xml/rss/nyt/HomePage.xml' },
+  { title: 'New York Post',       cat: 'news', lean: 'R', url: 'https://nypost.com/feed/' },
+  { title: 'The Guardian US',     cat: 'news', lean: 'L', url: 'https://www.theguardian.com/us-news/rss' },
+  { title: 'ProPublica',          cat: 'news', lean: 'L', url: 'https://feeds.propublica.org/propublica/main' },
 
-  // World & International
-  { title: 'BBC News',               url: 'https://feeds.bbci.co.uk/news/world/rss.xml' },
-  { title: 'Al Jazeera',             url: 'https://www.aljazeera.com/xml/rss/all.xml' },
-  { title: 'Deutsche Welle',         url: 'https://rss.dw.com/rdf/rss-en-all' },
+  // Politics — Left
+  { title: 'The Intercept',       cat: 'politics', lean: 'L', url: 'https://theintercept.com/feed/?rss' },
+  { title: 'The Nation',          cat: 'politics', lean: 'L', url: 'https://www.thenation.com/feed/?type=article' },
+  { title: 'Mother Jones',        cat: 'politics', lean: 'L', url: 'https://www.motherjones.com/feed/' },
+  { title: 'Common Dreams',       cat: 'politics', lean: 'L', url: 'https://www.commondreams.org/rss.xml' },
+  { title: 'Truthout',            cat: 'politics', lean: 'L', url: 'https://truthout.org/feed/' },
+  // Politics — Center / Libertarian
+  { title: 'The Hill',            cat: 'politics', lean: 'C', url: 'https://thehill.com/news/feed/' },
+  { title: 'Politico',            cat: 'politics', lean: 'C', url: 'https://rss.politico.com/congress.xml' },
+  { title: 'Reason',              cat: 'politics', lean: 'C', url: 'https://reason.com/feed/' },
+  // Politics — Right
+  { title: 'National Review',     cat: 'politics', lean: 'R', url: 'https://www.nationalreview.com/feed/' },
+  { title: 'The Federalist',      cat: 'politics', lean: 'R', url: 'https://thefederalist.com/feed/' },
+  { title: 'The Daily Signal',    cat: 'politics', lean: 'R', url: 'https://www.dailysignal.com/feed/' },
+  { title: 'Washington Examiner', cat: 'politics', lean: 'R', url: 'https://www.washingtonexaminer.com/feed/' },
+  { title: 'The Daily Wire',      cat: 'politics', lean: 'R', url: 'https://www.dailywire.com/feeds/rss.xml' },
 
-  // US News
-  { title: 'NPR News',               url: 'https://feeds.npr.org/1001/rss.xml' },
-  { title: 'New York Times',         url: 'https://rss.nytimes.com/services/xml/rss/nyt/HomePage.xml' },
+  // Tech & Security
+  { title: 'The Verge',           cat: 'tech', url: 'https://www.theverge.com/rss/index.xml' },
+  { title: 'Wired',               cat: 'tech', url: 'https://www.wired.com/feed/' },
+  { title: 'Ars Technica',        cat: 'tech', url: 'https://feeds.arstechnica.com/arstechnica/index' },
+  { title: 'Hacker News',         cat: 'tech', url: 'https://news.ycombinator.com/rss' },
+  { title: 'Techdirt',            cat: 'tech', url: 'https://www.techdirt.com/techdirt_rss.xml' },
+  { title: '404 Media',           cat: 'tech', url: 'https://www.404media.co/rss/' },
+  { title: 'Slashdot',            cat: 'tech', url: 'http://rss.slashdot.org/Slashdot/slashdotMain' },
+  { title: 'The Register',        cat: 'tech', url: 'https://www.theregister.com/headlines.atom' },
+  { title: 'Schneier Security',   cat: 'tech', url: 'https://www.schneier.com/feed/atom/' },
+  { title: 'EFF Deeplinks',       cat: 'tech', url: 'https://www.eff.org/rss/updates.xml' },
+  { title: 'Krebs on Security',   cat: 'tech', url: 'https://krebsonsecurity.com/feed/' },
+  { title: 'Bellingcat',          cat: 'tech', url: 'https://www.bellingcat.com/feed/' },
 
-  // US News & Politics — Left
-  { title: 'ProPublica',            url: 'https://feeds.propublica.org/propublica/main' },
-  { title: 'The Intercept',         url: 'https://theintercept.com/feed/?rss' },
-  { title: 'The Nation',            url: 'https://www.thenation.com/feed/?type=article' },
-  { title: 'Common Dreams',         url: 'https://www.commondreams.org/rss.xml' },
+  // Science (incl. climate & health)
+  { title: 'Quanta Magazine',     cat: 'science', url: 'https://www.quantamagazine.org/feed/' },
+  { title: 'Phys.org',            cat: 'science', url: 'https://phys.org/rss-feed/' },
+  { title: 'Science Daily',       cat: 'science', url: 'https://www.sciencedaily.com/rss/all.xml' },
+  { title: 'STAT News',           cat: 'science', url: 'https://www.statnews.com/feed/' },
+  { title: 'Grist',               cat: 'science', url: 'https://grist.org/feed/' },
+  { title: 'Yale E360',           cat: 'science', url: 'https://e360.yale.edu/rss.xml' },
+  { title: 'Inside Climate News', cat: 'science', url: 'https://insideclimatenews.org/feed/' },
 
-  // US News & Politics — Right
-  { title: 'Washington Examiner',   url: 'https://www.washingtonexaminer.com/feed/' },
-  { title: 'The Federalist',        url: 'https://thefederalist.com/feed/' },
-  { title: 'National Review',       url: 'https://www.nationalreview.com/feed/' },
-  { title: 'The Daily Signal',      url: 'https://www.dailysignal.com/feed/' },
+  // Business
+  { title: 'Naked Capitalism',    cat: 'business', lean: 'L', url: 'https://www.nakedcapitalism.com/feed' },
 
-  // US News & Politics — Libertarian
-  { title: 'Reason',                url: 'https://reason.com/feed/' },
-
-  // Science
-  { title: 'Quanta Magazine',       url: 'https://www.quantamagazine.org/feed/' },
-  { title: 'Phys.org',              url: 'https://phys.org/rss-feed/' },
-  { title: 'Science Daily',         url: 'https://www.sciencedaily.com/rss/all.xml' },
-
-  // Health & Medicine
-  { title: 'STAT News',             url: 'https://www.statnews.com/feed/' },
-
-  // Climate & Environment
-  { title: 'Grist',                 url: 'https://grist.org/feed/' },
-  { title: 'Yale E360',             url: 'https://e360.yale.edu/rss.xml' },
-  { title: 'Inside Climate News',   url: 'https://insideclimatenews.org/feed/' },
-
-  // Business & Economics
-  { title: 'Naked Capitalism',      url: 'https://www.nakedcapitalism.com/feed' },
-
-  // Technology
-  { title: 'The Verge',             url: 'https://www.theverge.com/rss/index.xml' },
-  { title: 'Wired',                 url: 'https://www.wired.com/feed/' },
-  { title: 'Ars Technica',          url: 'https://feeds.arstechnica.com/arstechnica/index' },
-  { title: 'Hacker News',           url: 'https://news.ycombinator.com/rss' },
-  { title: 'Techdirt',              url: 'https://www.techdirt.com/techdirt_rss.xml' },
-  { title: '404 Media',             url: 'https://www.404media.co/rss/' },
-  { title: 'Slashdot',              url: 'http://rss.slashdot.org/Slashdot/slashdotMain' },
-  { title: 'The Register',          url: 'https://www.theregister.com/headlines.atom' },
-
-  // Security & Privacy
-  { title: 'Schneier on Security',  url: 'https://www.schneier.com/feed/atom/' },
-  { title: 'EFF Deeplinks',         url: 'https://www.eff.org/rss/updates.xml' },
-  { title: 'Krebs on Security',     url: 'https://krebsonsecurity.com/feed/' },
-  { title: 'Bellingcat',            url: 'https://www.bellingcat.com/feed/' },
-
-  // Culture, Arts & Ideas
-  { title: 'Literary Hub',          url: 'https://lithub.com/feed/' },
-  { title: 'Boing Boing',           url: 'https://boingboing.net/feed' },
-  { title: 'Pluralistic',           url: 'https://pluralistic.net/feed/' },
-  { title: 'Kottke',                url: 'https://feeds.kottke.org/main' },
-  { title: 'Daring Fireball',       url: 'https://daringfireball.net/feeds/articles' },
-
-  // Sports
-  { title: 'Defector',              url: 'https://defector.com/feed' },
+  // Culture (incl. sports)
+  { title: 'Literary Hub',        cat: 'culture', url: 'https://lithub.com/feed/' },
+  { title: 'Boing Boing',         cat: 'culture', url: 'https://boingboing.net/feed' },
+  { title: 'Pluralistic',         cat: 'culture', url: 'https://pluralistic.net/feed/' },
+  { title: 'Kottke',              cat: 'culture', url: 'https://feeds.kottke.org/main' },
+  { title: 'Daring Fireball',     cat: 'culture', url: 'https://daringfireball.net/feeds/articles' },
+  { title: 'Defector (Sports)',   cat: 'culture', url: 'https://defector.com/feed' },
 ];
 
-// ── MAIN ENTRY ─────────────────────────────────────────────
+const CAT_ORDER  = ['top','news','politics','local','tech','science','business','culture'];
+const CAT_LABELS = {
+  top: 'Top Stories', news: 'Headlines', politics: 'Politics ⚖',
+  local: 'Austin / MN', tech: 'Tech', science: 'Science',
+  business: 'Business', culture: 'Culture'
+};
+
+// ── NAV ────────────────────────────────────────────
+function buildNav() {
+  const nav = document.getElementById('nav');
+  nav.innerHTML = '';
+  CAT_ORDER.forEach(cat => {
+    const b = document.createElement('button');
+    b.className = 'tab' + (cat === currentCat ? ' active' : '');
+    b.textContent = CAT_LABELS[cat];
+    b.onclick = () => { currentCat = cat; buildNav(); render(); window.scrollTo(0,0); };
+    nav.appendChild(b);
+  });
+}
+
+// ── CUSTOM OPML ENTRY ──────────────────────────────
 async function go() {
   const file = document.getElementById('opml-file').files[0];
   const url  = document.getElementById('opml-url').value.trim();
   const text = document.getElementById('opml-paste').value.trim();
-
   let opml = '';
   status('CONNECTING...');
-
   try {
-    if (file) {
-      opml = await readFile(file);
-    } else if (url) {
-      status('FETCHING OPML...');
-      opml = await corsGet(url);
-    } else if (text) {
-      opml = text;
-    } else {
-      status('PROVIDE A FILE, URL, OR PASTE OPML XML.');
-      return;
-    }
-  } catch(e) {
-    status('ERROR: ' + e.message);
-    return;
-  }
-
+    if (file) opml = await readFile(file);
+    else if (url) { status('FETCHING OPML...'); opml = await corsGet(url); }
+    else if (text) opml = text;
+    else { status('PROVIDE A FILE, URL, OR PASTE OPML.'); return; }
+  } catch(e) { status('ERROR: ' + e.message); return; }
   feeds = parseOPML(opml);
-  if (!feeds.length) { status('NO FEEDS FOUND IN OPML.'); return; }
-
+  if (!feeds.length) { status('NO FEEDS FOUND.'); return; }
+  document.getElementById('load-bar').style.display = 'none';
   await fetchFeeds(feeds);
 }
 
-// ── FILE READ ───────────────────────────────────────────────
 function readFile(f) {
   return new Promise((res, rej) => {
     const r = new FileReader();
@@ -473,9 +447,8 @@ function readFile(f) {
   });
 }
 
-// ── FETCH FEED (rss2json first, proxy fallback) ─────────────
+// ── FETCH ──────────────────────────────────────────
 async function fetchFeed(url) {
-  // Try rss2json — returns clean JSON, no XML parsing needed
   try {
     const r = await timedFetch(RSS2JSON + encodeURIComponent(url), 10000);
     if (r.ok) {
@@ -483,15 +456,11 @@ async function fetchFeed(url) {
       if (j.status === 'ok' && j.items?.length) return { json: j };
     }
   } catch(e) {}
-
-  // Fallback: raw XML via CORS proxy
   for (const proxy of CORS_PROXIES) {
     try {
       const r = await timedFetch(proxy(url), 10000);
       if (!r.ok) continue;
-      const text = proxy(url).includes('allorigins')
-        ? (await r.json()).contents
-        : await r.text();
+      const text = proxy(url).includes('allorigins') ? (await r.json()).contents : await r.text();
       return { xml: text };
     } catch(e) {}
   }
@@ -503,272 +472,261 @@ function timedFetch(url, ms) {
   const t = setTimeout(() => ctrl.abort(), ms);
   return fetch(url, { signal: ctrl.signal }).finally(() => clearTimeout(t));
 }
+async function corsGet(url) { return (await fetchFeed(url)).xml || ''; }
 
-async function corsGet(url) {
-  const result = await fetchFeed(url);
-  return result.xml || '';
-}
-
-// ── PARSE OPML ──────────────────────────────────────────────
 function parseOPML(xml) {
   const doc = new DOMParser().parseFromString(xml, 'text/xml');
   const out = [];
   doc.querySelectorAll('outline').forEach(o => {
     const u = o.getAttribute('xmlUrl') || o.getAttribute('xmlurl');
-    if (u) out.push({
-      title: o.getAttribute('title') || o.getAttribute('text') || u,
-      url: u
-    });
+    if (u) out.push({ title: o.getAttribute('title') || o.getAttribute('text') || u, url: u, cat: 'news' });
   });
   return out;
 }
 
-// ── CACHE ────────────────────────────────────────────────────
-const CACHE_KEY = 'thenews_cache';
-const CACHE_TTL = 30 * 60 * 1000; // 30 minutes
-
-function saveCache(feedItems) {
-  try {
-    localStorage.setItem(CACHE_KEY, JSON.stringify({
-      ts: Date.now(),
-      items: feedItems.map(i => ({ ...i, date: i.date.getTime() }))
-    }));
-  } catch(e) {}
+// ── CACHE ──────────────────────────────────────────
+const CACHE_KEY = 'thenews_cache_v2';
+const CACHE_TTL = 30 * 60 * 1000;
+function saveCache(arr) {
+  try { localStorage.setItem(CACHE_KEY, JSON.stringify({ ts: Date.now(),
+    items: arr.map(i => ({ ...i, date: i.date.getTime() })) })); } catch(e) {}
 }
-
 function loadCache() {
   try {
     const raw = localStorage.getItem(CACHE_KEY);
     if (!raw) return null;
-    const { ts, items: cached } = JSON.parse(raw);
+    const { ts, items: c } = JSON.parse(raw);
     if (Date.now() - ts > CACHE_TTL) return null;
-    return cached.map(i => ({ ...i, date: new Date(i.date) }));
+    return c.map(i => ({ ...i, date: new Date(i.date) }));
   } catch(e) { return null; }
 }
 
-// ── FETCH ALL FEEDS ─────────────────────────────────────────
+// ── FETCH ALL ──────────────────────────────────────
 async function fetchFeeds(list, background = false) {
   if (!background) items = [];
   let done = 0, errs = 0;
-  if (!background) {
-    document.getElementById('progress-wrap').style.display = 'flex';
-    progress(0);
-  }
-
   const fresh = [];
   await Promise.all(list.map(async feed => {
-    try {
-      const result = await fetchFeed(feed.url);
-      const parsed = result.json
-        ? parseRSS2JSON(result.json, feed.title)
-        : parseRSS(result.xml, feed.title);
+    let result = null;
+    for (let attempt = 0; attempt < 2 && !result; attempt++) {
+      if (attempt) await new Promise(r => setTimeout(r, 1500));
+      try { result = await fetchFeed(feed.url); } catch(e) {}
+    }
+    if (result) {
+      const parsed = result.json ? parseRSS2JSON(result.json, feed) : parseRSS(result.xml, feed);
       parsed.forEach(it => { fresh.push(it); if (!background) items.push(it); });
-    } catch(e) {
-      errs++;
-    }
+    } else { errs++; }
     done++;
-    if (!background) {
-      progress(Math.round(done / list.length * 100));
-      if (items.length > 0) {
-        document.getElementById('filter-row').style.display = 'flex';
-        render();
-      }
-    }
+    progress(Math.round(done / list.length * 100));
+    if (!background && items.length) { populateSourceFilter(); render(); }
   }));
 
-  if (!background) {
-    document.getElementById('progress-wrap').style.display = 'none';
-    document.getElementById('loading-strip').style.display = 'none';
-    populateSourceFilter();
-    document.getElementById('filter-row').style.display = 'flex';
-    render();
-    status(`${items.length} ARTICLES FROM ${list.length} FEEDS${errs ? ' | ' + errs + ' ERRORS' : ''}`);
-  } else {
-    // background refresh: swap in new items and re-render silently
-    items = fresh;
-    populateSourceFilter();
-    render();
-    status(`${items.length} ARTICLES — refreshed ${new Date().toLocaleTimeString()}`);
-  }
-
+  if (background) { items = fresh; }
+  progress(100);
+  setTimeout(() => progress(0), 600);
+  populateSourceFilter();
+  render();
+  status(`${items.length} ARTICLES · ${list.length} FEEDS${errs ? ' · ' + errs + ' ERR' : ''} · ${new Date().toLocaleTimeString()}`);
   saveCache(fresh.length ? fresh : items);
 }
 
 function populateSourceFilter() {
   const sel = document.getElementById('src-sel');
-  const current = sel.value;
-  sel.innerHTML = '<option value="">all</option>';
+  const cur = sel.value;
+  sel.innerHTML = '<option value="">all sources</option>';
   [...new Set(items.map(i => i.source))].sort().forEach(s => {
     const o = document.createElement('option');
     o.value = o.textContent = s;
     sel.appendChild(o);
   });
-  sel.value = current;
+  sel.value = cur;
 }
 
-// ── PARSE rss2json response ──────────────────────────────────
-function parseRSS2JSON(j, fallbackTitle) {
-  const source = j.feed?.title || fallbackTitle;
+// ── PARSE ──────────────────────────────────────────
+function parseRSS2JSON(j, feed) {
   return (j.items || []).map(i => ({
-    title: i.title?.trim() || '',
-    link: i.link || '#',
-    date: i.pubDate ? new Date(i.pubDate) : new Date(0),
-    source,
+    title: cleanTitle(i.title), link: i.link || '#',
+    date: i.pubDate ? new Date(i.pubDate.replace(' ', 'T') + 'Z') : new Date(0),
+    source: feed.title, cat: feed.cat || 'news', lean: feed.lean || ''
   })).filter(i => i.title);
 }
 
-// ── PARSE RSS / ATOM ────────────────────────────────────────
-function parseRSS(xml, fallbackTitle) {
+function parseRSS(xml, feed) {
   const doc = new DOMParser().parseFromString(xml, 'text/xml');
   const out = [];
   const isAtom = !!doc.querySelector('feed');
-
-  const feedTitle = (isAtom
-    ? doc.querySelector('feed > title')
-    : doc.querySelector('channel > title'))?.textContent?.trim() || fallbackTitle;
-
-  const entries = isAtom
-    ? doc.querySelectorAll('entry')
-    : doc.querySelectorAll('item');
-
+  const entries = isAtom ? doc.querySelectorAll('entry') : doc.querySelectorAll('item');
   entries.forEach(e => {
-    const title = e.querySelector('title')?.textContent?.trim() || '';
+    const title = cleanTitle(e.querySelector('title')?.textContent);
     const link = isAtom
       ? (e.querySelector('link[rel="alternate"]')?.getAttribute('href') ||
          e.querySelector('link:not([rel])')?.getAttribute('href') ||
          e.querySelector('link')?.getAttribute('href') || '#')
       : (e.querySelector('link')?.textContent?.trim() || '#');
-
     const rawDate = isAtom
       ? (e.querySelector('published')?.textContent || e.querySelector('updated')?.textContent)
       : (e.querySelector('pubDate')?.textContent || e.querySelector('dc\\:date, date')?.textContent);
-
     const date = rawDate ? new Date(rawDate) : new Date(0);
-    if (title) out.push({ title, link, date, source: feedTitle });
+    if (title) out.push({ title, link, date, source: feed.title, cat: feed.cat || 'news', lean: feed.lean || '' });
   });
-
   return out;
 }
 
-// ── RENDER ──────────────────────────────────────────────────
+function cleanTitle(t) {
+  if (!t) return '';
+  return t.trim().replace(/\s+-\s+[^-]{2,40}$/, m =>
+    // strip trailing " - Source" only for google-news style; keep most titles
+    /Google|News|KTTC|KIMT|Post Bulletin|Herald|Reuters|AP/i.test(m) ? '' : m
+  ).trim();
+}
+
+// ── RENDER ─────────────────────────────────────────
 function render() {
-  const q   = document.getElementById('q').value.toLowerCase();
+  const q = document.getElementById('q').value.toLowerCase();
   const src = document.getElementById('src-sel').value;
   const now = Date.now();
+  const view = document.getElementById('view');
 
   let list = items.filter(i =>
-    (!q   || i.title.toLowerCase().includes(q) || i.source.toLowerCase().includes(q)) &&
+    (!q || i.title.toLowerCase().includes(q) || i.source.toLowerCase().includes(q)) &&
     (!src || i.source === src)
   );
-
-  list.sort((a, b) => b.date - a.date);
+  // de-duplicate by link (feeds sometimes list a story twice)
+  const seen = new Set();
+  list = list.filter(i => {
+    const k = (i.link && i.link !== '#') ? i.link : i.source + '|' + i.title;
+    if (seen.has(k)) return false;
+    seen.add(k); return true;
+  });
+  list.sort((a,b) => b.date - a.date);
 
   document.getElementById('count-lbl').textContent = list.length + ' articles';
-  document.getElementById('empty').style.display = list.length ? 'none' : 'block';
 
-  if (!list.length) {
-    ['col-left','col-mid','col-right'].forEach(id => document.getElementById(id).innerHTML = '');
-    return;
+  // category filter (top = everything; politics handled specially)
+  let catList = list;
+  if (currentCat !== 'top') catList = list.filter(i => i.cat === currentCat);
+
+  document.getElementById('empty').style.display = catList.length ? 'none' : 'block';
+  view.className = '';
+  view.innerHTML = '';
+  if (!catList.length) return;
+
+  if (currentCat === 'top') renderTop(catList, now);
+  else if (currentCat === 'politics') renderPolitics(catList, now);
+  else renderCategory(catList, now);
+}
+
+function renderTop(list, now) {
+  const view = document.getElementById('view');
+  // Lead: top 3 from distinct sources so one feed can't flood it
+  const lead = [], usedSrc = new Set();
+  for (const i of list) {
+    if (lead.length >= 3) break;
+    if (usedSrc.has(i.source)) continue;
+    usedSrc.add(i.source); lead.push(i);
   }
-
-  // Group by source for left + right cols; top stories in center
-  const bySource = {};
-  list.forEach(i => { (bySource[i.source] = bySource[i.source] || []).push(i); });
-
-  const sources = Object.keys(bySource);
-  const chunk = Math.ceil(sources.length / 4);
-  const leftSrcs  = sources.slice(0, chunk);
-  const midSrcs   = sources.slice(chunk, chunk * 2);
-  const rightSrcs = sources.slice(chunk * 2, chunk * 3);
-  const farSrcs   = sources.slice(chunk * 3);
-
-  // Top 5 most recent go in center-left col as big headlines
-  const top5 = list.slice(0, 5);
-
-  document.getElementById('col-left').innerHTML  = buildCol(leftSrcs,  bySource, now);
-  document.getElementById('col-mid').innerHTML   = buildTopThen(midSrcs, bySource, top5, now);
-  document.getElementById('col-right').innerHTML = buildCol(rightSrcs, bySource, now);
-  document.getElementById('col-far').innerHTML   = buildCol(farSrcs,   bySource, now);
+  const leadSet = new Set(lead);
+  const rest = list.filter(i => !leadSet.has(i)).slice(0, 60);
+  let html = '<div class="lead">';
+  lead.forEach(i => html += `<a href="${escAttr(i.link)}" target="_blank" rel="noopener">
+    <span class="meta">${dot(i.lean)}${esc(i.source)} · ${fmtAge(now - i.date.getTime(), i.date)}</span>
+    <span class="head">${esc(i.title)}</span></a>`);
+  html += '</div><div id="top-rest">';
+  rest.forEach(i => html += storyRow(i, now));
+  html += '</div>';
+  view.innerHTML = html;
 }
 
-function buildTopThen(srcs, bySource, top5, now) {
-  let html = '<div class="section-head">&#9658; TOP STORIES</div>';
-  top5.forEach(i => {
-    html += itemHTML(i, now, 'top');
-  });
-  html += buildCol(srcs, bySource, now, false);
-  return html;
-}
-
-function buildCol(srcList, bySource, now) {
-  if (!srcList.length) return '';
+function renderCategory(list, now) {
+  const view = document.getElementById('view');
+  view.className = 'cols';
+  const bySrc = groupBy(list, 'source');
   let html = '';
-  srcList.forEach(src => {
-    const arr = bySource[src];
-    if (!arr || !arr.length) return;
-    html += `<div class="section-head">${esc(src.toUpperCase())}</div>`;
-    arr.slice(0, 12).forEach(i => { html += itemHTML(i, now, ''); });
+  Object.keys(bySrc).forEach(src => {
+    const arr = bySrc[src];
+    html += `<div class="block"><h3>${dot(arr[0].lean)}${esc(src)}</h3>`;
+    arr.slice(0, 7).forEach(i => html += storyRow(i, now));
+    html += '</div>';
   });
-  return html;
+  view.innerHTML = html;
 }
 
-function itemHTML(i, now, cls) {
-  const age  = now - i.date.getTime();
-  const breaking = age < 3600000 && i.date.getTime() > 0;
-  const ageStr = i.date.getTime() > 0 ? fmtAge(age) : '';
-  const classes = ['item', cls, breaking && !cls ? 'breaking' : ''].filter(Boolean).join(' ');
-  return `<div class="${classes}">
-    <a href="${escAttr(i.link)}" target="_blank" rel="noopener">${esc(i.title)}</a>
-    ${ageStr ? `<span class="age"> &mdash; ${ageStr}</span>` : ''}
-  </div>`;
+function renderPolitics(list, now) {
+  const view = document.getElementById('view');
+  view.className = 'split';
+  const lanes = [
+    { key: 'L', label: 'The Left', cls: 'lane-L' },
+    { key: 'C', label: 'Center', cls: 'lane-C' },
+    { key: 'R', label: 'The Right', cls: 'lane-R' },
+  ];
+  let html = '';
+  lanes.forEach(lane => {
+    const laneItems = list.filter(i => i.lean === lane.key);
+    html += `<div class="lane ${lane.cls}"><div class="lane-head">${lane.label}</div>`;
+    const bySrc = groupBy(laneItems, 'source');
+    Object.keys(bySrc).forEach(src => {
+      const arr = bySrc[src];
+      html += `<div class="block"><h3>${esc(src)}</h3>`;
+      arr.slice(0, 6).forEach(i => html += storyRow(i, now));
+      html += '</div>';
+    });
+    html += '</div>';
+  });
+  view.innerHTML = html;
 }
 
-function fmtAge(ms) {
+function storyRow(i, now) {
+  const age = now - i.date.getTime();
+  const isNew = age < 3600000 && i.date.getTime() > 0;
+  return `<a class="story" href="${escAttr(i.link)}" target="_blank" rel="noopener">
+    <span class="meta">${dot(i.lean)}${esc(i.source)} · ${fmtAge(age, i.date)}${isNew ? ' · <span class="new">NEW</span>' : ''}</span>
+    <span class="head">${esc(i.title)}</span></a>`;
+}
+
+function dot(lean) { return lean ? `<span class="dot dot-${lean}"></span>` : ''; }
+function groupBy(arr, key) {
+  const o = {};
+  arr.forEach(x => { (o[x[key]] = o[x[key]] || []).push(x); });
+  return o;
+}
+
+function fmtAge(ms, date) {
+  if (!date || date.getTime() <= 0) return '';
   const m = Math.floor(ms / 60000);
-  if (m < 60) return m + 'm ago';
+  if (m < 1) return 'now';
+  if (m < 60) return m + 'm';
   const h = Math.floor(m / 60);
-  if (h < 24) return h + 'h ago';
-  return Math.floor(h / 24) + 'd ago';
+  if (h < 24) return h + 'h';
+  return Math.floor(h / 24) + 'd';
 }
 
-// ── UTILS ───────────────────────────────────────────────────
-function esc(s) {
-  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-}
+// ── UTILS ──────────────────────────────────────────
+function esc(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 function escAttr(s) { return String(s).replace(/"/g,'&quot;').replace(/'/g,'&#39;'); }
-function status(msg) { document.getElementById('status-line').textContent = msg; }
-function progress(pct) { document.getElementById('progress-fill').style.width = pct + '%'; }
-
+function status(m) { document.getElementById('status').textContent = m; }
+function progress(p) { document.getElementById('progress-fill').style.width = p + '%'; }
 function toggleCustom() {
   const el = document.getElementById('load-bar');
-  el.style.display = el.style.display === 'none' ? 'block' : 'none';
+  el.style.display = el.style.display === 'block' ? 'none' : 'block';
 }
-
 async function reloadDefaults() {
   localStorage.removeItem(CACHE_KEY);
-  document.getElementById('load-bar').style.display = 'none';
-  document.getElementById('loading-strip').style.display = 'block';
-  document.getElementById('progress-wrap').style.display = 'flex';
-  document.getElementById('filter-row').style.display = 'none';
+  status('REFRESHING...');
   await fetchFeeds(DEFAULT_FEEDS, false);
 }
 
-// ── AUTO-LOAD ───────────────────────────────────────────────
+// ── BOOT ───────────────────────────────────────────
+buildNav();
 window.addEventListener('DOMContentLoaded', () => {
-  document.getElementById('load-bar').style.display = 'none';
-
   const cached = loadCache();
   if (cached) {
-    // Instant render from cache
     items = cached;
     populateSourceFilter();
-    document.getElementById('filter-row').style.display = 'flex';
-    document.getElementById('loading-strip').style.display = 'none';
     render();
-    status(`${items.length} ARTICLES (cached) — refreshing in background...`);
-    // Refresh in background without blocking UI
+    status(`${items.length} ARTICLES (cached) — refreshing...`);
     fetchFeeds(DEFAULT_FEEDS, true);
   } else {
+    status('LOADING FEEDS...');
     fetchFeeds(DEFAULT_FEEDS, false);
   }
 });
