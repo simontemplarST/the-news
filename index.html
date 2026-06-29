@@ -533,29 +533,25 @@ async function fetchFeeds(list, background = false) {
   }
 
   const fresh = [];
-  const BATCH = 10;
-  for (let i = 0; i < list.length; i += BATCH) {
-    await Promise.all(list.slice(i, i + BATCH).map(async feed => {
-      try {
-        if (!background) status('LOADING: ' + feed.title);
-        const result = await fetchFeed(feed.url);
-        const parsed = result.json
-          ? parseRSS2JSON(result.json, feed.title)
-          : parseRSS(result.xml, feed.title);
-        parsed.forEach(it => { fresh.push(it); if (!background) items.push(it); });
-      } catch(e) {
-        errs++;
+  await Promise.all(list.map(async feed => {
+    try {
+      const result = await fetchFeed(feed.url);
+      const parsed = result.json
+        ? parseRSS2JSON(result.json, feed.title)
+        : parseRSS(result.xml, feed.title);
+      parsed.forEach(it => { fresh.push(it); if (!background) items.push(it); });
+    } catch(e) {
+      errs++;
+    }
+    done++;
+    if (!background) {
+      progress(Math.round(done / list.length * 100));
+      if (items.length > 0) {
+        document.getElementById('filter-row').style.display = 'flex';
+        render();
       }
-      done++;
-      if (!background) {
-        progress(Math.round(done / list.length * 100));
-        if (items.length > 0) {
-          document.getElementById('filter-row').style.display = 'flex';
-          render();
-        }
-      }
-    }));
-  }
+    }
+  }));
 
   if (!background) {
     document.getElementById('progress-wrap').style.display = 'none';
