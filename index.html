@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>THE NEWS</title>
+<style>
+body {
+  background: #f4f0e8;
+  color: #111111;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 12px;
+  margin: 0;
+  padding: 0;
+}
+
+#wrap {
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 8px 24px;
+}
+
+/* HEADER */
+#masthead {
+  text-align: center;
+  border-bottom: 2px solid #990000;
+  padding-bottom: 6px;
+  margin-bottom: 8px;
+}
+
+#masthead h1 {
+  font-family: "Times New Roman", Times, serif;
+  font-size: 42px;
+  color: #111111;
+  margin: 0;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+}
+
+#masthead .tagline {
+  font-size: 10px;
+  color: #777777;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-top: 2px;
+}
+
+#masthead .timestamp {
+  font-size: 11px;
+  color: #555555;
+  margin-top: 4px;
+}
+
+/* LOAD BAR */
+#load-bar {
+  text-align: center;
+  padding: 12px 0;
+  border-bottom: 1px solid #cccccc;
+  margin-bottom: 12px;
+}
+
+#load-bar p {
+  color: #666666;
+  font-size: 11px;
+  margin: 4px 0;
+}
+
+#opml-url {
+  background: #ffffff;
+  color: #111111;
+  border: 1px solid #bbbbbb;
+  padding: 4px 6px;
+  font-size: 11px;
+  font-family: "Courier New", monospace;
+  width: 340px;
+}
+
+#opml-file {
+  color: #444444;
+  font-size: 11px;
+}
+
+textarea#opml-paste {
+  background: #ffffff;
+  color: #111111;
+  border: 1px solid #bbbbbb;
+  padding: 4px 6px;
+  font-size: 11px;
+  font-family: "Courier New", monospace;
+  width: 340px;
+  height: 60px;
+  resize: vertical;
+  display: block;
+  margin: 4px auto 0;
+}
+
+#load-btn {
+  background: #990000;
+  color: #ffffff;
+  border: none;
+  padding: 5px 18px;
+  font-size: 12px;
+  font-weight: bold;
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-top: 8px;
+}
+
+#load-btn:hover { background: #cc0000; }
+
+#status-line {
+  color: #666666;
+  font-size: 10px;
+  margin-top: 6px;
+  min-height: 14px;
+}
+
+#progress-wrap {
+  display: none;
+  margin-top: 6px;
+}
+
+#progress-track {
+  background: #dddddd;
+  border: 1px solid #bbbbbb;
+  height: 8px;
+  width: 340px;
+  margin: 0 auto;
+}
+
+#progress-fill {
+  background: #990000;
+  height: 100%;
+  width: 0%;
+  transition: width 0.2s;
+}
+
+/* FILTER */
+#filter-row {
+  display: none;
+  text-align: center;
+  padding: 6px 0;
+  border-bottom: 1px solid #cccccc;
+  margin-bottom: 10px;
+  font-size: 11px;
+  color: #666666;
+}
+
+#filter-row input[type=text] {
+  background: #ffffff;
+  color: #111111;
+  border: 1px solid #bbbbbb;
+  padding: 2px 5px;
+  font-size: 11px;
+  width: 180px;
+}
+
+#filter-row select {
+  background: #ffffff;
+  color: #111111;
+  border: 1px solid #bbbbbb;
+  padding: 2px 4px;
+  font-size: 11px;
+}
+
+#filter-row button {
+  background: #eeeeee;
+  color: #333333;
+  border: 1px solid #bbbbbb;
+  padding: 2px 8px;
+  font-size: 11px;
+  cursor: pointer;
+}
+
+#filter-row button:hover { background: #dddddd; }
+
+/* THREE COLUMN LAYOUT */
+#columns {
+  display: flex;
+  gap: 0;
+  align-items: flex-start;
+}
+
+.col {
+  flex: 1;
+  padding: 0 10px;
+  border-right: 1px solid #dddddd;
+}
+
+.col:first-child { padding-left: 0; }
+.col:last-child { border-right: none; }
+
+/* SECTION */
+.section-head {
+  color: #990000;
+  font-size: 10px;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  border-bottom: 1px solid #990000;
+  padding-bottom: 2px;
+  margin: 10px 0 4px;
+}
+
+.section-head:first-child { margin-top: 0; }
+
+/* LINKS */
+.item {
+  padding: 2px 0;
+  line-height: 1.4;
+  border-bottom: 1px dotted #dddddd;
+}
+
+.item a {
+  color: #000099;
+  text-decoration: none;
+  font-size: 12px;
+}
+
+.item a:hover {
+  color: #cc0000;
+  text-decoration: underline;
+}
+
+.item a:visited {
+  color: #551a8b;
+}
+
+.item .age {
+  color: #999999;
+  font-size: 10px;
+}
+
+/* TOP STORIES */
+.item.top a {
+  color: #111111;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.item.top a:hover { color: #cc0000; }
+
+/* BREAKING */
+.item.breaking a {
+  color: #cc0000;
+  font-weight: bold;
+}
+
+/* HR */
+hr {
+  border: none;
+  border-top: 1px solid #cccccc;
+  margin: 8px 0;
+}
+
+/* FOOTER */
+#footer {
+  text-align: center;
+  border-top: 1px solid #cccccc;
+  padding: 8px 0;
+  margin-top: 14px;
+  font-size: 10px;
+  color: #999999;
+}
+
+#footer a { color: #666688; }
+
+/* EMPTY */
+#empty {
+  text-align: center;
+  color: #999999;
+  padding: 30px 0;
+  font-size: 13px;
+  display: none;
+}
+</style>
+</head>
+<body>
+<div id="wrap">
+
+  <div id="masthead">
+    <h1>THE NEWS</h1>
+    <div class="tagline">World Wide Web Edition</div>
+    <div class="timestamp" id="ts"></div>
+  </div>
+
+  <!-- LOADING STRIP (shown during auto-load) -->
+  <div id="loading-strip" style="text-align:center; padding:8px 0; border-bottom:1px solid #333; margin-bottom:10px; font-size:11px; color:#888888;">
+    <div id="status-line">LOADING FEEDS...</div>
+    <div id="progress-wrap" style="margin-top:4px;">
+      <div id="progress-track"><div id="progress-fill"></div></div>
+    </div>
+  </div>
+
+  <!-- CUSTOM OPML PANEL (hidden until user clicks) -->
+  <div id="load-bar" style="display:none; text-align:center; padding:10px 0; border-bottom:1px solid #333; margin-bottom:10px;">
+    <p style="color:#888; font-size:11px; margin-bottom:6px;">LOAD OPML FILE &nbsp;|&nbsp; URL &nbsp;|&nbsp; OR PASTE XML</p>
+    <input type="file" id="opml-file" accept=".opml,.xml">
+    <br><br>
+    <input type="text" id="opml-url" placeholder="http://example.com/feeds.opml">
+    <br>
+    <textarea id="opml-paste" placeholder="...or paste OPML XML here"></textarea>
+    <br>
+    <button id="load-btn" onclick="go()">LOAD FEEDS</button>
+  </div>
+
+  <!-- FILTER -->
+  <div id="filter-row">
+    SEARCH: <input type="text" id="q" oninput="render()" placeholder="filter...">
+    &nbsp; SOURCE: <select id="src-sel" onchange="render()"><option value="">all</option></select>
+    &nbsp; <button onclick="document.getElementById('q').value='';document.getElementById('src-sel').value='';render()">clear</button>
+    &nbsp; <button onclick="reloadDefaults()">&#8635; refresh</button>
+    &nbsp; <button onclick="toggleCustom()">load custom OPML</button>
+    &nbsp; <span id="count-lbl" style="color:#666666;"></span>
+  </div>
+
+  <!-- NEWS COLUMNS -->
+  <div id="columns">
+    <div class="col" id="col-left"></div>
+    <div class="col" id="col-mid"></div>
+    <div class="col" id="col-right"></div>
+    <div class="col" id="col-far"></div>
+  </div>
+
+  <div id="empty">[ NO ARTICLES MATCH ]</div>
+
+  <div id="footer">
+    &copy; <span id="yr"></span> THE NEWS &mdash; ALL CONTENT FROM ORIGINAL SOURCES &mdash;
+    <a href="mailto:webmaster@thenews.invalid">WEBMASTER</a>
+  </div>
+
+</div>
+
+<script>
+// timestamp
+function tick() {
+  const d = new Date();
+  document.getElementById('ts').textContent =
+    d.toLocaleString('en-US', { weekday:'long', year:'numeric', month:'long', day:'numeric',
+      hour:'2-digit', minute:'2-digit', second:'2-digit' }).toUpperCase();
+}
+tick();
+setInterval(tick, 1000);
+document.getElementById('yr').textContent = new Date().getFullYear();
+
+// state
+let items = [];
+let feeds = [];
+
+const RSS2JSON = 'https://api.rss2json.com/v1/api.json?rss_url=';
+const CORS_PROXIES = [
+  url => `https://corsproxy.io/?${encodeURIComponent(url)}`,
+  url => `https://api.allorigins.win/get?url=${encodeURIComponent(url)}`,
+];
+
+// Default full-text feeds — auto-loaded on start
+const DEFAULT_FEEDS = [
+  // World & International
+  { title: 'Al Jazeera',         url: 'https://www.aljazeera.com/xml/rss/all.xml' },
+  { title: 'Deutsche Welle',     url: 'https://rss.dw.com/rdf/rss-en-all' },
+  { title: 'Reuters World',      url: 'https://feeds.reuters.com/Reuters/worldNews' },
+
+  // US News & Politics
+  { title: 'ProPublica',         url: 'https://feeds.propublica.org/propublica/main' },
+  { title: 'The Intercept',      url: 'https://theintercept.com/feed/?rss' },
+  { title: 'Reason',             url: 'https://reason.com/feed/' },
+  { title: 'Common Dreams',      url: 'https://www.commondreams.org/rss.xml' },
+  { title: 'The Nation',         url: 'https://www.thenation.com/feed/?type=article' },
+
+  // Science
+  { title: 'Quanta Magazine',    url: 'https://www.quantamagazine.org/feed/' },
+  { title: 'Phys.org',           url: 'https://phys.org/rss-feed/' },
+  { title: 'Science Daily',      url: 'https://www.sciencedaily.com/rss/all.xml' },
+
+  // Health & Medicine
+  { title: 'STAT News',          url: 'https://www.statnews.com/feed/' },
+
+  // Climate & Environment
+  { title: 'Grist',              url: 'https://grist.org/feed/' },
+  { title: 'Yale E360',          url: 'https://e360.yale.edu/rss.xml' },
+  { title: 'Inside Climate News', url: 'https://insideclimatenews.org/feed/' },
+
+  // Business & Economics
+  { title: 'Naked Capitalism',   url: 'https://www.nakedcapitalism.com/feed' },
+
+  // Technology
+  { title: 'Ars Technica',       url: 'https://feeds.arstechnica.com/arstechnica/index' },
+  { title: 'Techdirt',           url: 'https://www.techdirt.com/techdirt_rss.xml' },
+  { title: '404 Media',          url: 'https://www.404media.co/rss/' },
+  { title: 'Hacker News',        url: 'https://news.ycombinator.com/rss' },
+  { title: 'Slashdot',           url: 'http://rss.slashdot.org/Slashdot/slashdotMain' },
+  { title: 'The Register',       url: 'https://www.theregister.com/headlines.atom' },
+
+  // Security & Privacy
+  { title: 'Schneier on Security', url: 'https://www.schneier.com/feed/atom/' },
+  { title: 'EFF Deeplinks',      url: 'https://www.eff.org/rss/updates.xml' },
+  { title: 'Krebs on Security',  url: 'https://krebsonsecurity.com/feed/' },
+  { title: 'Bellingcat',         url: 'https://www.bellingcat.com/feed/' },
+
+  // Culture, Arts & Ideas
+  { title: 'Literary Hub',       url: 'https://lithub.com/feed/' },
+  { title: 'Boing Boing',        url: 'https://boingboing.net/feed' },
+  { title: 'Pluralistic',        url: 'https://pluralistic.net/feed/' },
+  { title: 'Kottke',             url: 'https://feeds.kottke.org/main' },
+  { title: 'Daring Fireball',    url: 'https://daringfireball.net/feeds/articles' },
+
+  // Sports
+  { title: 'Defector',           url: 'https://defector.com/feed' },
+];
+
+// ── MAIN ENTRY ─────────────────────────────────────────────
+async function go() {
+  const file = document.getElementById('opml-file').files[0];
+  const url  = document.getElementById('opml-url').value.trim();
+  const text = document.getElementById('opml-paste').value.trim();
+
+  let opml = '';
+  status('CONNECTING...');
+
+  try {
+    if (file) {
+      opml = await readFile(file);
+    } else if (url) {
+      status('FETCHING OPML...');
+      opml = await corsGet(url);
+    } else if (text) {
+      opml = text;
+    } else {
+      status('PROVIDE A FILE, URL, OR PASTE OPML XML.');
+      return;
+    }
+  } catch(e) {
+    status('ERROR: ' + e.message);
+    return;
+  }
+
+  feeds = parseOPML(opml);
+  if (!feeds.length) { status('NO FEEDS FOUND IN OPML.'); return; }
+
+  await fetchFeeds(feeds);
+}
+
+// ── FILE READ ───────────────────────────────────────────────
+function readFile(f) {
+  return new Promise((res, rej) => {
+    const r = new FileReader();
+    r.onload = e => res(e.target.result);
+    r.onerror = () => rej(new Error('cannot read file'));
+    r.readAsText(f);
+  });
+}
+
+// ── FETCH FEED (rss2json first, proxy fallback) ─────────────
+async function fetchFeed(url) {
+  // Try rss2json — returns clean JSON, no XML parsing needed
+  try {
+    const r = await timedFetch(RSS2JSON + encodeURIComponent(url), 10000);
+    if (r.ok) {
+      const j = await r.json();
+      if (j.status === 'ok' && j.items?.length) return { json: j };
+    }
+  } catch(e) {}
+
+  // Fallback: raw XML via CORS proxy
+  for (const proxy of CORS_PROXIES) {
+    try {
+      const r = await timedFetch(proxy(url), 10000);
+      if (!r.ok) continue;
+      const text = proxy(url).includes('allorigins')
+        ? (await r.json()).contents
+        : await r.text();
+      return { xml: text };
+    } catch(e) {}
+  }
+  throw new Error('all proxies failed');
+}
+
+function timedFetch(url, ms) {
+  const ctrl = new AbortController();
+  const t = setTimeout(() => ctrl.abort(), ms);
+  return fetch(url, { signal: ctrl.signal }).finally(() => clearTimeout(t));
+}
+
+async function corsGet(url) {
+  const result = await fetchFeed(url);
+  return result.xml || '';
+}
+
+// ── PARSE OPML ──────────────────────────────────────────────
+function parseOPML(xml) {
+  const doc = new DOMParser().parseFromString(xml, 'text/xml');
+  const out = [];
+  doc.querySelectorAll('outline').forEach(o => {
+    const u = o.getAttribute('xmlUrl') || o.getAttribute('xmlurl');
+    if (u) out.push({
+      title: o.getAttribute('title') || o.getAttribute('text') || u,
+      url: u
+    });
+  });
+  return out;
+}
+
+// ── FETCH ALL FEEDS ─────────────────────────────────────────
+async function fetchFeeds(list) {
+  items = [];
+  let done = 0, errs = 0;
+  document.getElementById('progress-wrap').style.display = 'flex';
+  progress(0);
+
+  const BATCH = 5;
+  for (let i = 0; i < list.length; i += BATCH) {
+    await Promise.all(list.slice(i, i + BATCH).map(async feed => {
+      try {
+        status('LOADING: ' + feed.title);
+        const result = await fetchFeed(feed.url);
+        if (result.json) {
+          parseRSS2JSON(result.json, feed.title).forEach(it => items.push(it));
+        } else {
+          parseRSS(result.xml, feed.title).forEach(it => items.push(it));
+        }
+      } catch(e) {
+        errs++;
+      }
+      done++;
+      progress(Math.round(done / list.length * 100));
+      if (items.length > 0) {
+        document.getElementById('filter-row').style.display = 'flex';
+        render();
+      }
+    }));
+  }
+
+  document.getElementById('progress-wrap').style.display = 'none';
+  document.getElementById('loading-strip').style.display = 'none';
+
+  // populate source filter
+  const sel = document.getElementById('src-sel');
+  sel.innerHTML = '<option value="">all</option>';
+  [...new Set(items.map(i => i.source))].sort().forEach(s => {
+    const o = document.createElement('option');
+    o.value = o.textContent = s;
+    sel.appendChild(o);
+  });
+
+  document.getElementById('filter-row').style.display = 'flex';
+  render();
+  status(`${items.length} ARTICLES FROM ${list.length} FEEDS${errs ? ' | ' + errs + ' ERRORS' : ''}`);
+}
+
+// ── PARSE rss2json response ──────────────────────────────────
+function parseRSS2JSON(j, fallbackTitle) {
+  const source = j.feed?.title || fallbackTitle;
+  return (j.items || []).map(i => ({
+    title: i.title?.trim() || '',
+    link: i.link || '#',
+    date: i.pubDate ? new Date(i.pubDate) : new Date(0),
+    source,
+  })).filter(i => i.title);
+}
+
+// ── PARSE RSS / ATOM ────────────────────────────────────────
+function parseRSS(xml, fallbackTitle) {
+  const doc = new DOMParser().parseFromString(xml, 'text/xml');
+  const out = [];
+  const isAtom = !!doc.querySelector('feed');
+
+  const feedTitle = (isAtom
+    ? doc.querySelector('feed > title')
+    : doc.querySelector('channel > title'))?.textContent?.trim() || fallbackTitle;
+
+  const entries = isAtom
+    ? doc.querySelectorAll('entry')
+    : doc.querySelectorAll('item');
+
+  entries.forEach(e => {
+    const title = e.querySelector('title')?.textContent?.trim() || '';
+    const link = isAtom
+      ? (e.querySelector('link[rel="alternate"]')?.getAttribute('href') ||
+         e.querySelector('link:not([rel])')?.getAttribute('href') ||
+         e.querySelector('link')?.getAttribute('href') || '#')
+      : (e.querySelector('link')?.textContent?.trim() || '#');
+
+    const rawDate = isAtom
+      ? (e.querySelector('published')?.textContent || e.querySelector('updated')?.textContent)
+      : (e.querySelector('pubDate')?.textContent || e.querySelector('dc\\:date, date')?.textContent);
+
+    const date = rawDate ? new Date(rawDate) : new Date(0);
+    if (title) out.push({ title, link, date, source: feedTitle });
+  });
+
+  return out;
+}
+
+// ── RENDER ──────────────────────────────────────────────────
+function render() {
+  const q   = document.getElementById('q').value.toLowerCase();
+  const src = document.getElementById('src-sel').value;
+  const now = Date.now();
+
+  let list = items.filter(i =>
+    (!q   || i.title.toLowerCase().includes(q) || i.source.toLowerCase().includes(q)) &&
+    (!src || i.source === src)
+  );
+
+  list.sort((a, b) => b.date - a.date);
+
+  document.getElementById('count-lbl').textContent = list.length + ' articles';
+  document.getElementById('empty').style.display = list.length ? 'none' : 'block';
+
+  if (!list.length) {
+    ['col-left','col-mid','col-right'].forEach(id => document.getElementById(id).innerHTML = '');
+    return;
+  }
+
+  // Group by source for left + right cols; top stories in center
+  const bySource = {};
+  list.forEach(i => { (bySource[i.source] = bySource[i.source] || []).push(i); });
+
+  const sources = Object.keys(bySource);
+  const chunk = Math.ceil(sources.length / 4);
+  const leftSrcs  = sources.slice(0, chunk);
+  const midSrcs   = sources.slice(chunk, chunk * 2);
+  const rightSrcs = sources.slice(chunk * 2, chunk * 3);
+  const farSrcs   = sources.slice(chunk * 3);
+
+  // Top 5 most recent go in center-left col as big headlines
+  const top5 = list.slice(0, 5);
+
+  document.getElementById('col-left').innerHTML  = buildCol(leftSrcs,  bySource, now);
+  document.getElementById('col-mid').innerHTML   = buildTopThen(midSrcs, bySource, top5, now);
+  document.getElementById('col-right').innerHTML = buildCol(rightSrcs, bySource, now);
+  document.getElementById('col-far').innerHTML   = buildCol(farSrcs,   bySource, now);
+}
+
+function buildTopThen(srcs, bySource, top5, now) {
+  let html = '<div class="section-head">&#9658; TOP STORIES</div>';
+  top5.forEach(i => {
+    html += itemHTML(i, now, 'top');
+  });
+  html += buildCol(srcs, bySource, now, false);
+  return html;
+}
+
+function buildCol(srcList, bySource, now) {
+  if (!srcList.length) return '';
+  let html = '';
+  srcList.forEach(src => {
+    const arr = bySource[src];
+    if (!arr || !arr.length) return;
+    html += `<div class="section-head">${esc(src.toUpperCase())}</div>`;
+    arr.slice(0, 12).forEach(i => { html += itemHTML(i, now, ''); });
+  });
+  return html;
+}
+
+function itemHTML(i, now, cls) {
+  const age  = now - i.date.getTime();
+  const breaking = age < 3600000 && i.date.getTime() > 0;
+  const ageStr = i.date.getTime() > 0 ? fmtAge(age) : '';
+  const classes = ['item', cls, breaking && !cls ? 'breaking' : ''].filter(Boolean).join(' ');
+  return `<div class="${classes}">
+    <a href="${escAttr(i.link)}" target="_blank" rel="noopener">${esc(i.title)}</a>
+    ${ageStr ? `<span class="age"> &mdash; ${ageStr}</span>` : ''}
+  </div>`;
+}
+
+function fmtAge(ms) {
+  const m = Math.floor(ms / 60000);
+  if (m < 60) return m + 'm ago';
+  const h = Math.floor(m / 60);
+  if (h < 24) return h + 'h ago';
+  return Math.floor(h / 24) + 'd ago';
+}
+
+// ── UTILS ───────────────────────────────────────────────────
+function esc(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+function escAttr(s) { return String(s).replace(/"/g,'&quot;').replace(/'/g,'&#39;'); }
+function status(msg) { document.getElementById('status-line').textContent = msg; }
+function progress(pct) { document.getElementById('progress-fill').style.width = pct + '%'; }
+
+function toggleCustom() {
+  const el = document.getElementById('load-bar');
+  el.style.display = el.style.display === 'none' ? 'block' : 'none';
+}
+
+async function reloadDefaults() {
+  document.getElementById('load-bar').style.display = 'none';
+  document.getElementById('loading-strip').style.display = 'flex';
+  document.getElementById('progress-wrap').style.display = 'flex';
+  document.getElementById('filter-row').style.display = 'none';
+  await fetchFeeds(DEFAULT_FEEDS);
+}
+
+// ── AUTO-LOAD ───────────────────────────────────────────────
+window.addEventListener('DOMContentLoaded', () => {
+  // Hide the big form, show just progress inline under masthead
+  document.getElementById('load-bar').style.display = 'none';
+  fetchFeeds(DEFAULT_FEEDS);
+});
+</script>
+</body>
+</html>
