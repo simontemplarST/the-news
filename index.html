@@ -309,10 +309,6 @@ let feeds = [];
 let currentCat = 'top';
 
 const RSS2JSON = 'https://api.rss2json.com/v1/api.json?rss_url=';
-const CORS_PROXIES = [
-  url => `https://corsproxy.io/?${encodeURIComponent(url)}`,
-  url => `https://api.allorigins.win/get?url=${encodeURIComponent(url)}`,
-];
 
 // ── FEEDS ──────────────────────────────────────────
 // cat: tab bucket
@@ -400,23 +396,30 @@ function readFile(f) {
 }
 
 // ── FETCH ──────────────────────────────────────────
+// Race all sources at once; return whichever responds first. A single slow
+// or rate-limited source can no longer hold up a feed.
 async function fetchFeed(url) {
-  try {
-    const r = await timedFetch(RSS2JSON + encodeURIComponent(url), 10000);
-    if (r.ok) {
-      const j = await r.json();
-      if (j.status === 'ok' && j.items?.length) return { json: j };
-    }
-  } catch(e) {}
-  for (const proxy of CORS_PROXIES) {
-    try {
-      const r = await timedFetch(proxy(url), 10000);
-      if (!r.ok) continue;
-      const text = proxy(url).includes('allorigins') ? (await r.json()).contents : await r.text();
-      return { xml: text };
-    } catch(e) {}
-  }
-  throw new Error('all proxies failed');
+  return Promise.any([
+    fetchRss2json(url),
+    fetchProxy(`https://corsproxy.io/?${encodeURIComponent(url)}`, false),
+    fetchProxy(`https://api.allorigins.win/get?url=${encodeURIComponent(url)}`, true),
+  ]);
+}
+
+async function fetchRss2json(url) {
+  const r = await timedFetch(RSS2JSON + encodeURIComponent(url), 6000);
+  if (!r.ok) throw 0;
+  const j = await r.json();
+  if (j.status === 'ok' && j.items?.length) return { json: j };
+  throw 0;
+}
+
+async function fetchProxy(proxyUrl, isAllorigins) {
+  const r = await timedFetch(proxyUrl, 6000);
+  if (!r.ok) throw 0;
+  const text = isAllorigins ? (await r.json()).contents : await r.text();
+  if (!text || text.length < 40) throw 0;
+  return { xml: text };
 }
 
 function timedFetch(url, ms) {
@@ -461,8 +464,12 @@ async function fetchFeeds(list, background = false) {
   await Promise.all(list.map(async feed => {
     let result = null;
     for (let attempt = 0; attempt < 2 && !result; attempt++) {
-      if (attempt) await new Promise(r => setTimeout(r, 1500));
+      if (attempt) await new Promise(r => setTimeout(r, 800));
+      const s = performance.now();
       try { result = await fetchFeed(feed.url); } catch(e) {}
+      // A feed that burned the full timeout is slow/dead — don't wait on it
+      // again; the fast feeds are already on screen.
+      if (!result && performance.now() - s > 4000) break;
     }
     if (result) {
       const parsed = result.json ? parseRSS2JSON(result.json, feed) : parseRSS(result.xml, feed);
@@ -470,7 +477,7 @@ async function fetchFeeds(list, background = false) {
     } else { errs++; }
     done++;
     progress(Math.round(done / list.length * 100));
-    if (!background && items.length) { populateSourceFilter(); render(); }
+    if (!background && items.length) scheduleRender();
   }));
 
   if (background) { items = fresh; }
@@ -495,8 +502,12 @@ function populateSourceFilter() {
 }
 
 // ── PARSE ──────────────────────────────────────────
+// We only ever display ~8 per source, so parsing hundreds per feed is wasted
+// work (DOM walks, sort, dedup, cache). Cap at the source.
+const MAX_PER_FEED = 25;
+
 function parseRSS2JSON(j, feed) {
-  return (j.items || []).map(i => ({
+  return (j.items || []).slice(0, MAX_PER_FEED).map(i => ({
     title: cleanTitle(i.title), link: i.link || '#',
     date: i.pubDate ? new Date(i.pubDate.replace(' ', 'T') + 'Z') : new Date(0),
     source: feed.title, cat: feed.cat || 'news'
@@ -507,7 +518,8 @@ function parseRSS(xml, feed) {
   const doc = new DOMParser().parseFromString(xml, 'text/xml');
   const out = [];
   const isAtom = !!doc.querySelector('feed');
-  const entries = isAtom ? doc.querySelectorAll('entry') : doc.querySelectorAll('item');
+  const all = isAtom ? doc.querySelectorAll('entry') : doc.querySelectorAll('item');
+  const entries = Array.from(all).slice(0, MAX_PER_FEED);
   entries.forEach(e => {
     const title = cleanTitle(e.querySelector('title')?.textContent);
     const link = isAtom
@@ -533,6 +545,14 @@ function cleanTitle(t) {
 }
 
 // ── RENDER ─────────────────────────────────────────
+// Coalesce bursts of feed completions into one render per frame.
+let renderScheduled = false;
+function scheduleRender() {
+  if (renderScheduled) return;
+  renderScheduled = true;
+  requestAnimationFrame(() => { renderScheduled = false; render(); });
+}
+
 function render() {
   const q = document.getElementById('q').value.toLowerCase();
   const src = document.getElementById('src-sel').value;
