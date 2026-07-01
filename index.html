@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>THE NEWS</title>
+<title>THE BREACH — Cybersecurity, Exploits &amp; Enterprise Defense</title>
 <style>
 :root {
   --bg: #f4f0e8;
@@ -16,9 +16,6 @@
   --link: #1a3a6b;
   --link-visited: #6a4a7a;
   --paper: #fbf8f1;
-  --lean-L: #1c4f9c;
-  --lean-R: #9e1b1b;
-  --lean-C: #8a8175;
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -156,12 +153,6 @@ body {
 /* ── CONTENT ────────────────────────────────────── */
 #view { padding: 16px 20px 40px; }
 
-/* lean dot */
-.dot { display: inline-block; width: 7px; height: 7px; border-radius: 50%; vertical-align: middle; margin-right: 5px; }
-.dot-L { background: var(--lean-L); }
-.dot-R { background: var(--lean-R); }
-.dot-C { background: var(--lean-C); }
-
 /* story row */
 .story { display: block; text-decoration: none; padding: 7px 0; border-bottom: 1px solid var(--rule); }
 .story:hover .head { color: var(--accent); }
@@ -176,6 +167,17 @@ body {
 }
 .story .head { color: var(--ink); font-size: 15px; line-height: 1.32; }
 .story .new { color: var(--accent); font-weight: bold; }
+.flag {
+  font-family: "Courier New", monospace;
+  font-weight: bold;
+  font-size: 9px;
+  letter-spacing: .5px;
+  color: #fff;
+  background: var(--accent);
+  padding: 0 4px;
+  border-radius: 2px;
+}
+.legend .flag { font-size: 9px; }
 
 /* source block (category views) */
 #view.cols .block { break-inside: avoid; margin-bottom: 22px; }
@@ -216,27 +218,6 @@ body {
 #top-rest { columns: 300px; column-gap: 30px; }
 #top-rest .story { break-inside: avoid; }
 
-/* POLITICS split */
-#view.split { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; }
-.lane { padding: 0 18px; border-right: 1px solid var(--rule); }
-.lane:first-child { padding-left: 0; }
-.lane:last-child { border-right: none; padding-right: 0; }
-.lane-head {
-  font-family: "Courier New", monospace;
-  font-size: 13px;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  font-weight: bold;
-  text-align: center;
-  padding: 6px;
-  margin-bottom: 12px;
-  color: #fff;
-}
-.lane-L .lane-head { background: var(--lean-L); }
-.lane-C .lane-head { background: var(--lean-C); }
-.lane-R .lane-head { background: var(--lean-R); }
-.lane .block h3 { color: var(--ink); border-bottom-color: var(--rule-strong); }
-
 #empty { text-align: center; padding: 60px 20px; color: var(--faint); font-family: "Courier New", monospace; }
 
 /* custom OPML panel */
@@ -254,8 +235,6 @@ body {
 .legend { display: inline-flex; gap: 14px; margin-top: 6px; }
 
 @media (max-width: 760px) {
-  #view.split { grid-template-columns: 1fr; }
-  .lane { padding: 0; border-right: none; border-bottom: 1px solid var(--rule); margin-bottom: 14px; padding-bottom: 8px; }
   #status { display: none; }
 }
 </style>
@@ -264,8 +243,8 @@ body {
 <div id="wrap">
 
   <header id="masthead">
-    <div class="kicker">World Wide Web Edition &middot; All The News That Syndicates</div>
-    <h1>THE <span>NEWS</span></h1>
+    <div class="kicker">Cybersecurity &middot; Windows Exploits &middot; Enterprise Defense &middot; Threat Intel</div>
+    <h1>THE <span>BREACH</span></h1>
     <div class="ts" id="ts"></div>
     <div class="rule"></div>
   </header>
@@ -276,7 +255,7 @@ body {
   </div>
 
   <div id="toolbar">
-    <input type="text" id="q" placeholder="search headlines..." oninput="render()">
+    <input type="text" id="q" placeholder="search threats, CVEs, vendors..." oninput="render()">
     <select id="src-sel" onchange="render()"><option value="">all sources</option></select>
     <button class="tbtn" onclick="reloadDefaults()">&#8635; refresh</button>
     <button class="tbtn" onclick="toggleCustom()">+ OPML</button>
@@ -296,11 +275,9 @@ body {
   <div id="empty" style="display:none;">[ NO ARTICLES MATCH ]</div>
 
   <footer id="footer">
-    <div>&copy; <span id="yr"></span> THE NEWS &mdash; AGGREGATED FROM ORIGINAL SOURCES &mdash; <a href="mailto:webmaster@cameronheard.com">WEBMASTER</a></div>
+    <div>&copy; <span id="yr"></span> THE BREACH &mdash; AGGREGATED FROM ORIGINAL SOURCES &mdash; <a href="mailto:webmaster@cameronheard.com">WEBMASTER</a></div>
     <div class="legend">
-      <span><span class="dot dot-L"></span>LEFT</span>
-      <span><span class="dot dot-C"></span>CENTER</span>
-      <span><span class="dot dot-R"></span>RIGHT</span>
+      <span><span class="flag">ZERO-DAY</span> / <span class="flag">RCE</span> / <span class="flag">CVE</span> / <span class="flag">EXPLOITED</span> = headline threat flags</span>
     </div>
   </footer>
 
@@ -328,82 +305,59 @@ const CORS_PROXIES = [
 ];
 
 // ── FEEDS ──────────────────────────────────────────
-// cat: tab bucket. lean: L | C | R (drives Politics split + dot)
+// cat: tab bucket
 const DEFAULT_FEEDS = [
-  // Austin MN & Minnesota
-  { title: 'Austin MN Local',     cat: 'local', url: 'https://news.google.com/rss/search?q=%22Austin%2C+Minnesota%22+OR+%22Mower+County%22+OR+%22Austin+MN%22&hl=en-US&gl=US&ceid=US:en' },
-  { title: 'Hormel / SPAM',       cat: 'local', url: 'https://news.google.com/rss/search?q=Hormel+Foods+Austin+Minnesota&hl=en-US&gl=US&ceid=US:en' },
-  { title: 'MPR News',            cat: 'local', lean: 'C', url: 'https://www.mprnews.org/feed/homepage' },
-  { title: 'MN Reformer',         cat: 'local', lean: 'L', url: 'https://minnesotareformer.com/feed/' },
-  { title: 'Alpha News MN',       cat: 'local', lean: 'R', url: 'https://alphanews.org/feed/' },
+  // Threat News — general cybersecurity headlines
+  { title: 'The Hacker News',     cat: 'news', url: 'https://feeds.feedburner.com/TheHackersNews' },
+  { title: 'BleepingComputer',    cat: 'news', url: 'https://www.bleepingcomputer.com/feed/' },
+  { title: 'SecurityWeek',        cat: 'news', url: 'https://www.securityweek.com/feed/' },
+  { title: 'CyberScoop',          cat: 'news', url: 'https://cyberscoop.com/feed/' },
+  { title: 'The Record',          cat: 'news', url: 'https://therecord.media/feed/' },
+  { title: 'The Register Security', cat: 'news', url: 'https://www.theregister.com/security/headlines.atom' },
+  { title: 'Krebs on Security',   cat: 'news', url: 'https://krebsonsecurity.com/feed/' },
+  { title: 'Graham Cluley',       cat: 'news', url: 'https://grahamcluley.com/feed/' },
 
-  // Headlines — straight news (with lean dots)
-  { title: 'BBC News',            cat: 'news', lean: 'C', url: 'https://feeds.bbci.co.uk/news/world/rss.xml' },
-  { title: 'Al Jazeera',          cat: 'news', lean: 'C', url: 'https://www.aljazeera.com/xml/rss/all.xml' },
-  { title: 'Deutsche Welle',      cat: 'news', lean: 'C', url: 'https://rss.dw.com/rdf/rss-en-all' },
-  { title: 'NPR News',            cat: 'news', lean: 'L', url: 'https://feeds.npr.org/1001/rss.xml' },
-  { title: 'New York Times',      cat: 'news', lean: 'L', url: 'https://rss.nytimes.com/services/xml/rss/nyt/HomePage.xml' },
-  { title: 'New York Post',       cat: 'news', lean: 'R', url: 'https://nypost.com/feed/' },
-  { title: 'The Guardian US',     cat: 'news', lean: 'L', url: 'https://www.theguardian.com/us-news/rss' },
-  { title: 'ProPublica',          cat: 'news', lean: 'L', url: 'https://feeds.propublica.org/propublica/main' },
+  // Exploits & Vulnerabilities
+  { title: 'Zero Day Initiative', cat: 'exploits', url: 'https://www.zerodayinitiative.com/rss/published/' },
+  { title: 'Exploit-DB',          cat: 'exploits', url: 'https://www.exploit-db.com/rss.xml' },
+  { title: 'Full Disclosure',     cat: 'exploits', url: 'https://seclists.org/rss/fulldisclosure.rss' },
+  { title: 'Rapid7 Blog',         cat: 'exploits', url: 'https://www.rapid7.com/blog/rss/' },
+  { title: 'Tenable Blog',        cat: 'exploits', url: 'https://www.tenable.com/blog/feed' },
 
-  // Politics — Left
-  { title: 'The Intercept',       cat: 'politics', lean: 'L', url: 'https://theintercept.com/feed/?rss' },
-  { title: 'The Nation',          cat: 'politics', lean: 'L', url: 'https://www.thenation.com/feed/?type=article' },
-  { title: 'Mother Jones',        cat: 'politics', lean: 'L', url: 'https://www.motherjones.com/feed/' },
-  { title: 'Common Dreams',       cat: 'politics', lean: 'L', url: 'https://www.commondreams.org/rss.xml' },
-  { title: 'Truthout',            cat: 'politics', lean: 'L', url: 'https://truthout.org/feed/' },
-  // Politics — Center / Libertarian
-  { title: 'The Hill',            cat: 'politics', lean: 'C', url: 'https://thehill.com/news/feed/' },
-  { title: 'Politico',            cat: 'politics', lean: 'C', url: 'https://rss.politico.com/congress.xml' },
-  { title: 'Reason',              cat: 'politics', lean: 'C', url: 'https://reason.com/feed/' },
-  // Politics — Right
-  { title: 'National Review',     cat: 'politics', lean: 'R', url: 'https://www.nationalreview.com/feed/' },
-  { title: 'The Federalist',      cat: 'politics', lean: 'R', url: 'https://thefederalist.com/feed/' },
-  { title: 'The Daily Signal',    cat: 'politics', lean: 'R', url: 'https://www.dailysignal.com/feed/' },
-  { title: 'Washington Examiner', cat: 'politics', lean: 'R', url: 'https://www.washingtonexaminer.com/feed/' },
-  { title: 'The Daily Wire',      cat: 'politics', lean: 'R', url: 'https://www.dailywire.com/feeds/rss.xml' },
+  // Windows / Microsoft
+  { title: 'Microsoft Security',  cat: 'windows', url: 'https://www.microsoft.com/en-us/security/blog/feed/' },
+  { title: '0patch Blog',         cat: 'windows', url: 'https://blog.0patch.com/feeds/posts/default' },
+  { title: 'Google Project Zero', cat: 'windows', url: 'https://googleprojectzero.blogspot.com/feeds/posts/default' },
+  { title: 'Windows Exploit Watch', cat: 'windows', url: 'https://news.google.com/rss/search?q=%22Patch+Tuesday%22+OR+%22Windows+zero-day%22+OR+%22Windows+vulnerability%22+OR+%22Windows+exploit%22&hl=en-US&gl=US&ceid=US:en' },
 
-  // Tech & Security
-  { title: 'The Verge',           cat: 'tech', url: 'https://www.theverge.com/rss/index.xml' },
-  { title: 'Wired',               cat: 'tech', url: 'https://www.wired.com/feed/' },
-  { title: 'Ars Technica',        cat: 'tech', url: 'https://feeds.arstechnica.com/arstechnica/index' },
-  { title: 'Hacker News',         cat: 'tech', url: 'https://news.ycombinator.com/rss' },
-  { title: 'Techdirt',            cat: 'tech', url: 'https://www.techdirt.com/techdirt_rss.xml' },
-  { title: '404 Media',           cat: 'tech', url: 'https://www.404media.co/rss/' },
-  { title: 'Slashdot',            cat: 'tech', url: 'http://rss.slashdot.org/Slashdot/slashdotMain' },
-  { title: 'The Register',        cat: 'tech', url: 'https://www.theregister.com/headlines.atom' },
-  { title: 'Schneier Security',   cat: 'tech', url: 'https://www.schneier.com/feed/atom/' },
-  { title: 'EFF Deeplinks',       cat: 'tech', url: 'https://www.eff.org/rss/updates.xml' },
-  { title: 'Krebs on Security',   cat: 'tech', url: 'https://krebsonsecurity.com/feed/' },
-  { title: 'Bellingcat',          cat: 'tech', url: 'https://www.bellingcat.com/feed/' },
+  // Enterprise Security
+  { title: 'Dark Reading',        cat: 'enterprise', url: 'https://www.darkreading.com/rss.xml' },
+  { title: 'CSO Online',          cat: 'enterprise', url: 'https://www.csoonline.com/feed/' },
+  { title: 'Infosecurity Mag',    cat: 'enterprise', url: 'https://www.infosecurity-magazine.com/rss/news/' },
+  { title: 'Help Net Security',   cat: 'enterprise', url: 'https://www.helpnetsecurity.com/feed/' },
+  { title: 'GBHackers',           cat: 'enterprise', url: 'https://gbhackers.com/feed/' },
+  { title: 'Enterprise Ransomware', cat: 'enterprise', url: 'https://news.google.com/rss/search?q=ransomware+enterprise+breach+OR+CISO+OR+%22data+breach%22&hl=en-US&gl=US&ceid=US:en' },
 
-  // Science (incl. climate & health)
-  { title: 'Quanta Magazine',     cat: 'science', url: 'https://www.quantamagazine.org/feed/' },
-  { title: 'Phys.org',            cat: 'science', url: 'https://phys.org/rss-feed/' },
-  { title: 'Science Daily',       cat: 'science', url: 'https://www.sciencedaily.com/rss/all.xml' },
-  { title: 'STAT News',           cat: 'science', url: 'https://www.statnews.com/feed/' },
-  { title: 'Grist',               cat: 'science', url: 'https://grist.org/feed/' },
-  { title: 'Yale E360',           cat: 'science', url: 'https://e360.yale.edu/rss.xml' },
-  { title: 'Inside Climate News', cat: 'science', url: 'https://insideclimatenews.org/feed/' },
+  // Threat Intel & Research
+  { title: 'Cisco Talos',         cat: 'intel', url: 'https://blog.talosintelligence.com/rss/' },
+  { title: 'Palo Alto Unit 42',   cat: 'intel', url: 'https://unit42.paloaltonetworks.com/feed/' },
+  { title: 'Check Point Research', cat: 'intel', url: 'https://research.checkpoint.com/feed/' },
+  { title: 'Securelist (Kaspersky)', cat: 'intel', url: 'https://securelist.com/feed/' },
+  { title: 'WeLiveSecurity (ESET)', cat: 'intel', url: 'https://www.welivesecurity.com/en/rss/feed/' },
+  { title: 'Malwarebytes Labs',   cat: 'intel', url: 'https://www.malwarebytes.com/blog/feed/index.xml' },
+  { title: 'Schneier on Security', cat: 'intel', url: 'https://www.schneier.com/feed/atom/' },
 
-  // Business
-  { title: 'Naked Capitalism',    cat: 'business', lean: 'L', url: 'https://www.nakedcapitalism.com/feed' },
-
-  // Culture (incl. sports)
-  { title: 'Literary Hub',        cat: 'culture', url: 'https://lithub.com/feed/' },
-  { title: 'Boing Boing',         cat: 'culture', url: 'https://boingboing.net/feed' },
-  { title: 'Pluralistic',         cat: 'culture', url: 'https://pluralistic.net/feed/' },
-  { title: 'Kottke',              cat: 'culture', url: 'https://feeds.kottke.org/main' },
-  { title: 'Daring Fireball',     cat: 'culture', url: 'https://daringfireball.net/feeds/articles' },
-  { title: 'Defector (Sports)',   cat: 'culture', url: 'https://defector.com/feed' },
+  // Official Advisories & Alerts
+  { title: 'CISA Advisories',     cat: 'advisories', url: 'https://www.cisa.gov/cybersecurity-advisories/all.xml' },
+  { title: 'SANS Internet Storm Center', cat: 'advisories', url: 'https://isc.sans.edu/rssfeed_full.xml' },
+  { title: 'NCSC UK',             cat: 'advisories', url: 'https://www.ncsc.gov.uk/api/1/services/v1/all-rss-feed.xml' },
 ];
 
-const CAT_ORDER  = ['top','news','politics','local','tech','science','business','culture'];
+const CAT_ORDER  = ['top','news','exploits','windows','enterprise','intel','advisories'];
 const CAT_LABELS = {
-  top: 'Top Stories', news: 'Headlines', politics: 'Politics ⚖',
-  local: 'Austin / MN', tech: 'Tech', science: 'Science',
-  business: 'Business', culture: 'Culture'
+  top: 'Top Stories', news: 'Threat News', exploits: 'Exploits & CVEs',
+  windows: 'Windows', enterprise: 'Enterprise', intel: 'Threat Intel',
+  advisories: 'Advisories'
 };
 
 // ── NAV ────────────────────────────────────────────
@@ -485,7 +439,7 @@ function parseOPML(xml) {
 }
 
 // ── CACHE ──────────────────────────────────────────
-const CACHE_KEY = 'thenews_cache_v2';
+const CACHE_KEY = 'thebreach_cache_v1';
 const CACHE_TTL = 30 * 60 * 1000;
 function saveCache(arr) {
   try { localStorage.setItem(CACHE_KEY, JSON.stringify({ ts: Date.now(),
@@ -547,7 +501,7 @@ function parseRSS2JSON(j, feed) {
   return (j.items || []).map(i => ({
     title: cleanTitle(i.title), link: i.link || '#',
     date: i.pubDate ? new Date(i.pubDate.replace(' ', 'T') + 'Z') : new Date(0),
-    source: feed.title, cat: feed.cat || 'news', lean: feed.lean || ''
+    source: feed.title, cat: feed.cat || 'news'
   })).filter(i => i.title);
 }
 
@@ -567,7 +521,7 @@ function parseRSS(xml, feed) {
       ? (e.querySelector('published')?.textContent || e.querySelector('updated')?.textContent)
       : (e.querySelector('pubDate')?.textContent || e.querySelector('dc\\:date, date')?.textContent);
     const date = rawDate ? new Date(rawDate) : new Date(0);
-    if (title) out.push({ title, link, date, source: feed.title, cat: feed.cat || 'news', lean: feed.lean || '' });
+    if (title) out.push({ title, link, date, source: feed.title, cat: feed.cat || 'news' });
   });
   return out;
 }
@@ -612,7 +566,6 @@ function render() {
   if (!catList.length) return;
 
   if (currentCat === 'top') renderTop(catList, now);
-  else if (currentCat === 'politics') renderPolitics(catList, now);
   else renderCategory(catList, now);
 }
 
@@ -628,9 +581,9 @@ function renderTop(list, now) {
   const leadSet = new Set(lead);
   const rest = list.filter(i => !leadSet.has(i)).slice(0, 60);
   let html = '<div class="lead">';
-  lead.forEach(i => html += `<a href="${escAttr(i.link)}" target="_blank" rel="noopener">
-    <span class="meta">${dot(i.lean)}${esc(i.source)} · ${fmtAge(now - i.date.getTime(), i.date)}</span>
-    <span class="head">${esc(i.title)}</span></a>`);
+  lead.forEach(i => { const f = threatFlag(i.title); html += `<a href="${escAttr(i.link)}" target="_blank" rel="noopener">
+    <span class="meta">${f ? `<span class="flag">${f}</span> ` : ''}${esc(i.source)} · ${fmtAge(now - i.date.getTime(), i.date)}</span>
+    <span class="head">${esc(i.title)}</span></a>`; });
   html += '</div><div id="top-rest">';
   rest.forEach(i => html += storyRow(i, now));
   html += '</div>';
@@ -644,32 +597,8 @@ function renderCategory(list, now) {
   let html = '';
   Object.keys(bySrc).forEach(src => {
     const arr = bySrc[src];
-    html += `<div class="block"><h3>${dot(arr[0].lean)}${esc(src)}</h3>`;
-    arr.slice(0, 7).forEach(i => html += storyRow(i, now));
-    html += '</div>';
-  });
-  view.innerHTML = html;
-}
-
-function renderPolitics(list, now) {
-  const view = document.getElementById('view');
-  view.className = 'split';
-  const lanes = [
-    { key: 'L', label: 'The Left', cls: 'lane-L' },
-    { key: 'C', label: 'Center', cls: 'lane-C' },
-    { key: 'R', label: 'The Right', cls: 'lane-R' },
-  ];
-  let html = '';
-  lanes.forEach(lane => {
-    const laneItems = list.filter(i => i.lean === lane.key);
-    html += `<div class="lane ${lane.cls}"><div class="lane-head">${lane.label}</div>`;
-    const bySrc = groupBy(laneItems, 'source');
-    Object.keys(bySrc).forEach(src => {
-      const arr = bySrc[src];
-      html += `<div class="block"><h3>${esc(src)}</h3>`;
-      arr.slice(0, 6).forEach(i => html += storyRow(i, now));
-      html += '</div>';
-    });
+    html += `<div class="block"><h3>${esc(src)}</h3>`;
+    arr.slice(0, 8).forEach(i => html += storyRow(i, now));
     html += '</div>';
   });
   view.innerHTML = html;
@@ -678,12 +607,25 @@ function renderPolitics(list, now) {
 function storyRow(i, now) {
   const age = now - i.date.getTime();
   const isNew = age < 3600000 && i.date.getTime() > 0;
+  const flag = threatFlag(i.title);
   return `<a class="story" href="${escAttr(i.link)}" target="_blank" rel="noopener">
-    <span class="meta">${dot(i.lean)}${esc(i.source)} · ${fmtAge(age, i.date)}${isNew ? ' · <span class="new">NEW</span>' : ''}</span>
+    <span class="meta">${flag ? `<span class="flag">${flag}</span> ` : ''}${esc(i.source)} · ${fmtAge(age, i.date)}${isNew ? ' · <span class="new">NEW</span>' : ''}</span>
     <span class="head">${esc(i.title)}</span></a>`;
 }
 
-function dot(lean) { return lean ? `<span class="dot dot-${lean}"></span>` : ''; }
+// tag headlines by threat keyword — gives the security wire its teeth
+function threatFlag(title) {
+  const t = title.toLowerCase();
+  if (/zero[\s-]?day|0[\s-]?day/.test(t)) return 'ZERO-DAY';
+  if (/actively exploited|exploited in the wild|in-the-wild|under active/.test(t)) return 'EXPLOITED';
+  if (/\brce\b|remote code execution/.test(t)) return 'RCE';
+  if (/ransomware/.test(t)) return 'RANSOMWARE';
+  if (/\bcritical\b/.test(t)) return 'CRITICAL';
+  if (/cve-\d{4}-\d+/i.test(title)) return 'CVE';
+  if (/\bapt\d|nation[\s-]?state|threat actor/.test(t)) return 'APT';
+  if (/patch tuesday/.test(t)) return 'PATCH';
+  return '';
+}
 function groupBy(arr, key) {
   const o = {};
   arr.forEach(x => { (o[x[key]] = o[x[key]] || []).push(x); });
