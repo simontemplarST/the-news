@@ -3,19 +3,27 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>THE BREACH — Cybersecurity, Exploits &amp; Enterprise Defense</title>
+<title>THE BRIEFING — Government IT, Modernization &amp; Cybersecurity for Public-Sector Leadership</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,400;0,500;0,600;0,700;0,900;1,400&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700;8..60,900&display=swap" rel="stylesheet">
 <style>
 :root {
-  --bg: #f4f0e8;
-  --ink: #14110c;
-  --muted: #6b6256;
-  --faint: #a39888;
-  --rule: #d8cfbe;
-  --rule-strong: #c2b6a0;
-  --accent: #990000;
-  --link: #1a3a6b;
-  --link-visited: #6a4a7a;
-  --paper: #fbf8f1;
+  --bg: #eef1f6;
+  --paper: #ffffff;
+  --ink: #14213d;
+  --navy: #0a3161;        /* Old Glory Blue */
+  --navy-deep: #06213f;
+  --slate: #52607a;
+  --faint: #8a94a8;
+  --rule: #d5dce6;
+  --rule-strong: #b9c3d2;
+  --accent: #b31942;      /* Old Glory Red */
+  --gold: #9c7c2f;
+  --link: #0a3161;
+  --ok: #1f7a4d;
+  --sans: "Public Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --serif: "Source Serif 4", Georgia, "Times New Roman", serif;
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -23,43 +31,69 @@
 body {
   background: var(--bg);
   color: var(--ink);
-  font-family: Georgia, "Times New Roman", serif;
+  font-family: var(--sans);
   font-size: 15px;
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
 }
 
-.mono { font-family: "Courier New", ui-monospace, monospace; }
+.mono { font-family: var(--sans); }
 
-#wrap { max-width: 1320px; margin: 0 auto; }
+#wrap { max-width: 1340px; margin: 0 auto; background: var(--paper); box-shadow: 0 0 0 1px var(--rule), 0 18px 50px -30px rgba(10,49,97,.5); }
+
+/* ── GOV BANNER STRIP ───────────────────────────── */
+#gov-strip {
+  background: var(--navy-deep);
+  color: #c9d6ea;
+  font-size: 11px;
+  letter-spacing: .5px;
+  padding: 5px 20px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+#gov-strip b { color: #fff; font-weight: 600; }
+#gov-strip .seal { color: var(--gold); font-size: 12px; }
+#gov-strip .right { margin-left: auto; color: #8ea3c4; letter-spacing: 1px; }
 
 /* ── MASTHEAD ───────────────────────────────────── */
 #masthead {
   text-align: center;
-  padding: 18px 20px 10px;
+  padding: 22px 20px 14px;
+  border-bottom: 1px solid var(--rule);
+  background:
+    linear-gradient(var(--paper), var(--paper)) padding-box,
+    var(--paper);
 }
-#masthead .kicker,
-#masthead .ts {
-  font-family: "Courier New", monospace;
-  font-size: 10px;
+#masthead .kicker {
+  font-family: var(--sans);
+  font-size: 11px;
+  font-weight: 600;
   letter-spacing: 3px;
   text-transform: uppercase;
-  color: var(--muted);
+  color: var(--accent);
 }
 #masthead h1 {
-  font-size: clamp(38px, 7vw, 72px);
+  font-family: var(--serif);
+  font-size: clamp(36px, 6.4vw, 68px);
   font-weight: 900;
-  letter-spacing: 2px;
-  line-height: 0.95;
-  margin: 4px 0;
-  font-family: Georgia, "Times New Roman", serif;
+  letter-spacing: -0.5px;
+  line-height: 0.98;
+  margin: 6px 0 8px;
+  color: var(--navy);
 }
 #masthead h1 span { color: var(--accent); }
-#masthead .rule {
-  height: 3px;
-  background: var(--ink);
-  border-bottom: 1px solid var(--ink);
-  margin-top: 6px;
+#masthead .ts {
+  font-family: var(--sans);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--slate);
+  border-top: 1px solid var(--rule);
+  padding-top: 8px;
+  display: inline-block;
+  min-width: 60%;
 }
 
 /* ── STICKY NAV ─────────────────────────────────── */
@@ -67,35 +101,35 @@ body {
   position: sticky;
   top: 0;
   z-index: 20;
-  background: var(--bg);
-  border-bottom: 2px solid var(--ink);
+  background: var(--navy);
 }
 #nav {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
   gap: 0;
-  max-width: 1320px;
+  max-width: 1340px;
   margin: 0 auto;
 }
 .tab {
-  font-family: "Courier New", monospace;
+  font-family: var(--sans);
   font-size: 12px;
-  letter-spacing: 1.5px;
+  font-weight: 600;
+  letter-spacing: 1px;
   text-transform: uppercase;
-  padding: 9px 16px;
+  padding: 11px 18px;
   background: none;
   border: none;
-  border-right: 1px solid var(--rule);
-  color: var(--muted);
+  border-bottom: 3px solid transparent;
+  color: #b9c8de;
   cursor: pointer;
   white-space: nowrap;
+  transition: color .12s, border-color .12s;
 }
-.tab:hover { color: var(--ink); background: var(--paper); }
+.tab:hover { color: #fff; }
 .tab.active {
-  color: var(--bg);
-  background: var(--ink);
-  font-weight: bold;
+  color: #fff;
+  border-bottom-color: var(--gold);
 }
 
 /* ── TOOLBAR ────────────────────────────────────── */
@@ -104,149 +138,145 @@ body {
   align-items: center;
   gap: 10px;
   flex-wrap: wrap;
-  padding: 8px 20px;
+  padding: 10px 20px;
   border-bottom: 1px solid var(--rule);
-  font-family: "Courier New", monospace;
-  font-size: 11px;
-  color: var(--muted);
+  background: var(--bg);
+  font-family: var(--sans);
+  font-size: 12px;
+  color: var(--slate);
 }
 #toolbar input[type=text], #toolbar select {
-  font-family: "Courier New", monospace;
-  font-size: 12px;
-  padding: 4px 7px;
+  font-family: var(--sans);
+  font-size: 13px;
+  padding: 6px 9px;
   border: 1px solid var(--rule-strong);
+  border-radius: 4px;
   background: var(--paper);
   color: var(--ink);
 }
-#toolbar input[type=text] { width: 200px; }
+#toolbar input[type=text] { width: 220px; }
 #toolbar input[type=text]:focus, #toolbar select:focus {
   outline: none;
-  border-color: var(--accent);
+  border-color: var(--navy);
+  box-shadow: 0 0 0 2px rgba(10,49,97,.15);
 }
 .tbtn {
-  font-family: "Courier New", monospace;
-  font-size: 11px;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  padding: 4px 10px;
+  font-family: var(--sans);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: .5px;
+  padding: 6px 12px;
   border: 1px solid var(--rule-strong);
+  border-radius: 4px;
   background: var(--paper);
-  color: var(--ink);
+  color: var(--navy);
   cursor: pointer;
 }
-.tbtn:hover { background: var(--ink); color: var(--bg); }
-#status { margin-left: auto; color: var(--faint); font-size: 10px; max-width: 360px; text-align: right; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.tbtn:hover { background: var(--navy); color: #fff; border-color: var(--navy); }
+#count-lbl { font-weight: 600; color: var(--ink); }
+#status { margin-left: auto; color: var(--faint); font-size: 11px; max-width: 380px; text-align: right; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
 /* progress */
-#progress-track {
-  height: 2px;
-  background: var(--rule);
-  width: 100%;
-}
-#progress-fill {
-  height: 100%;
-  width: 0;
-  background: var(--accent);
-  transition: width .25s;
-}
+#progress-track { height: 3px; background: transparent; width: 100%; }
+#progress-fill { height: 100%; width: 0; background: var(--gold); transition: width .25s; }
 
 /* ── CONTENT ────────────────────────────────────── */
-#view { padding: 16px 20px 40px; }
+#view { padding: 20px 24px 44px; }
 
 /* story row */
-.story { display: block; text-decoration: none; padding: 7px 0; border-bottom: 1px solid var(--rule); }
+.story { display: block; text-decoration: none; padding: 9px 0; border-bottom: 1px solid var(--rule); }
 .story:hover .head { color: var(--accent); }
 .story .meta {
-  font-family: "Courier New", monospace;
-  font-size: 10px;
+  font-family: var(--sans);
+  font-size: 11px;
+  font-weight: 600;
   letter-spacing: .5px;
   text-transform: uppercase;
-  color: var(--muted);
+  color: var(--slate);
   display: block;
-  margin-bottom: 1px;
+  margin-bottom: 2px;
 }
-.story .head { color: var(--ink); font-size: 15px; line-height: 1.32; }
-.story .new { color: var(--accent); font-weight: bold; }
+.story .head { color: var(--ink); font-size: 15px; line-height: 1.34; font-weight: 500; }
+.story .new { color: var(--accent); font-weight: 700; }
 .flag {
-  font-family: "Courier New", monospace;
-  font-weight: bold;
-  font-size: 9px;
+  font-family: var(--sans);
+  font-weight: 700;
+  font-size: 9.5px;
   letter-spacing: .5px;
   color: #fff;
   background: var(--accent);
-  padding: 0 4px;
-  border-radius: 2px;
+  padding: 1px 5px;
+  border-radius: 3px;
+  vertical-align: 1px;
 }
-.legend .flag { font-size: 9px; }
+.flag.policy { background: var(--navy); }
+.flag.tech { background: var(--gold); color: #1c1403; }
+.legend .flag { font-size: 9.5px; }
 
 /* source block (category views) */
-#view.cols .block { break-inside: avoid; margin-bottom: 22px; }
-#view.cols { columns: 330px; column-gap: 34px; }
+#view.cols .block { break-inside: avoid; margin-bottom: 26px; }
+#view.cols { columns: 340px; column-gap: 38px; }
 .block h3 {
-  font-family: "Courier New", monospace;
+  font-family: var(--sans);
   font-size: 12px;
-  letter-spacing: 1.5px;
+  font-weight: 700;
+  letter-spacing: 1px;
   text-transform: uppercase;
-  color: var(--accent);
-  border-bottom: 2px solid var(--accent);
-  padding-bottom: 3px;
-  margin-bottom: 4px;
-  display: flex;
-  align-items: center;
-  gap: 4px;
+  color: var(--navy);
+  border-bottom: 2px solid var(--navy);
+  padding-bottom: 4px;
+  margin-bottom: 6px;
 }
-.block .more {
-  font-family: "Courier New", monospace;
-  font-size: 10px;
-  color: var(--faint);
-  text-decoration: none;
-  margin-top: 4px;
-  display: inline-block;
-}
-.block .more:hover { color: var(--accent); }
 
 /* TOP layout */
-.lead { margin-bottom: 18px; padding-bottom: 12px; border-bottom: 3px double var(--ink); }
-.lead a { text-decoration: none; display: block; padding: 8px 0; border-bottom: 1px solid var(--rule); }
-.lead a:first-child { padding-top: 0; }
+.lead { margin-bottom: 22px; padding-bottom: 14px; border-bottom: 3px double var(--navy); }
+.lead a { text-decoration: none; display: block; padding: 10px 0; border-bottom: 1px solid var(--rule); }
+.lead a:first-child { padding-top: 0; border-left: 4px solid var(--accent); padding-left: 14px; }
 .lead a:hover .head { color: var(--accent); }
-.lead .meta { font-family: "Courier New", monospace; font-size: 10px; letter-spacing: .5px; text-transform: uppercase; color: var(--muted); }
-.lead a:nth-child(1) .head { font-size: 30px; font-weight: 900; line-height: 1.08; }
+.lead .meta { font-family: var(--sans); font-size: 11px; font-weight: 600; letter-spacing: .5px; text-transform: uppercase; color: var(--slate); }
+.lead a:nth-child(1) .head { font-family: var(--serif); font-size: 32px; font-weight: 900; line-height: 1.06; letter-spacing: -0.5px; }
 .lead a:nth-child(2) .head,
-.lead a:nth-child(3) .head { font-size: 21px; font-weight: 700; line-height: 1.15; }
-.lead .head { color: var(--ink); }
-#top-rest { columns: 300px; column-gap: 30px; }
+.lead a:nth-child(3) .head { font-family: var(--serif); font-size: 22px; font-weight: 700; line-height: 1.14; }
+.lead .head { color: var(--navy); }
+#top-rest { columns: 310px; column-gap: 32px; }
 #top-rest .story { break-inside: avoid; }
 
-#empty { text-align: center; padding: 60px 20px; color: var(--faint); font-family: "Courier New", monospace; }
+#empty { text-align: center; padding: 60px 20px; color: var(--faint); font-family: var(--sans); }
 
 /* custom OPML panel */
-#load-bar { display: none; padding: 16px 20px; border-bottom: 1px solid var(--rule); background: var(--paper); text-align: center; }
-#load-bar p { font-size: 12px; color: var(--muted); margin-bottom: 8px; }
+#load-bar { display: none; padding: 16px 20px; border-bottom: 1px solid var(--rule); background: var(--bg); text-align: center; }
+#load-bar p { font-size: 12px; font-weight: 600; color: var(--slate); margin-bottom: 8px; letter-spacing: .5px; }
 #load-bar input[type=text], #load-bar textarea {
-  font-family: "Courier New", monospace; font-size: 12px; padding: 5px 7px;
-  border: 1px solid var(--rule-strong); background: #fff; color: var(--ink); width: 360px; max-width: 90%;
+  font-family: var(--sans); font-size: 13px; padding: 6px 9px; border-radius: 4px;
+  border: 1px solid var(--rule-strong); background: #fff; color: var(--ink); width: 380px; max-width: 90%;
 }
 #load-bar textarea { height: 70px; display: block; margin: 6px auto; resize: vertical; }
 
 /* footer */
-#footer { text-align: center; padding: 18px 20px 30px; border-top: 2px solid var(--ink); font-family: "Courier New", monospace; font-size: 10px; color: var(--faint); letter-spacing: 1px; }
-#footer a { color: var(--muted); }
-.legend { display: inline-flex; gap: 14px; margin-top: 6px; }
+#footer { text-align: center; padding: 20px; border-top: 3px solid var(--navy); background: var(--navy-deep); color: #9db1cf; font-family: var(--sans); font-size: 11px; letter-spacing: .5px; }
+#footer a { color: #c9d6ea; }
+.legend { display: inline-flex; flex-wrap: wrap; justify-content: center; gap: 14px; margin-top: 8px; align-items: center; }
 
 @media (max-width: 760px) {
   #status { display: none; }
+  #gov-strip .right { display: none; }
+  #view { padding: 16px 16px 40px; }
 }
 </style>
 </head>
 <body>
 <div id="wrap">
 
+  <div id="gov-strip">
+    <span class="seal">&#9733;</span>
+    <span>A daily intelligence brief for <b>public-sector technology leadership</b></span>
+    <span class="right">CIO &middot; CISO &middot; IT DIRECTOR EDITION</span>
+  </div>
+
   <header id="masthead">
-    <div class="kicker">Cybersecurity &middot; Windows Exploits &middot; Enterprise Defense &middot; Threat Intel</div>
-    <h1>THE <span>BREACH</span></h1>
+    <div class="kicker">Government IT &middot; Modernization &middot; Cybersecurity &middot; Policy &amp; Oversight</div>
+    <h1>THE <span>BRIEFING</span></h1>
     <div class="ts" id="ts"></div>
-    <div class="rule"></div>
   </header>
 
   <div id="navbar">
@@ -255,7 +285,7 @@ body {
   </div>
 
   <div id="toolbar">
-    <input type="text" id="q" placeholder="search threats, CVEs, vendors..." oninput="render()">
+    <input type="text" id="q" placeholder="search agencies, programs, CVEs..." oninput="render()">
     <select id="src-sel" onchange="render()"><option value="">all sources</option></select>
     <button class="tbtn" onclick="reloadDefaults()">&#8635; refresh</button>
     <button class="tbtn" onclick="toggleCustom()">+ OPML</button>
@@ -275,9 +305,11 @@ body {
   <div id="empty" style="display:none;">[ NO ARTICLES MATCH ]</div>
 
   <footer id="footer">
-    <div>&copy; <span id="yr"></span> THE BREACH &mdash; AGGREGATED FROM ORIGINAL SOURCES &mdash; <a href="mailto:webmaster@cameronheard.com">WEBMASTER</a></div>
+    <div>&copy; <span id="yr"></span> THE BRIEFING &mdash; AGGREGATED FROM ORIGINAL PUBLIC-SECTOR SOURCES &mdash; <a href="mailto:webmaster@cameronheard.com">WEBMASTER</a></div>
     <div class="legend">
-      <span><span class="flag">ZERO-DAY</span> / <span class="flag">RCE</span> / <span class="flag">CVE</span> / <span class="flag">EXPLOITED</span> = headline threat flags</span>
+      <span><span class="flag">SECURITY</span> zero-day &middot; breach &middot; CVE</span>
+      <span><span class="flag policy">POLICY</span> directive &middot; FedRAMP &middot; budget</span>
+      <span><span class="flag tech">MODERNIZATION</span> AI &middot; cloud &middot; zero-trust</span>
     </div>
   </footer>
 
@@ -307,57 +339,45 @@ const CORS_PROXIES = [
 // ── FEEDS ──────────────────────────────────────────
 // cat: tab bucket
 const DEFAULT_FEEDS = [
-  // Threat News — general cybersecurity headlines
-  { title: 'The Hacker News',     cat: 'news', url: 'https://feeds.feedburner.com/TheHackersNews' },
-  { title: 'BleepingComputer',    cat: 'news', url: 'https://www.bleepingcomputer.com/feed/' },
-  { title: 'SecurityWeek',        cat: 'news', url: 'https://www.securityweek.com/feed/' },
-  { title: 'CyberScoop',          cat: 'news', url: 'https://cyberscoop.com/feed/' },
-  { title: 'The Record',          cat: 'news', url: 'https://therecord.media/feed/' },
-  { title: 'The Register Security', cat: 'news', url: 'https://www.theregister.com/security/headlines.atom' },
-  { title: 'Krebs on Security',   cat: 'news', url: 'https://krebsonsecurity.com/feed/' },
-  { title: 'Graham Cluley',       cat: 'news', url: 'https://grahamcluley.com/feed/' },
+  // Federal IT — the fed CIO / modernization beat
+  { title: 'FedScoop',            cat: 'federal', url: 'https://fedscoop.com/feed/' },
+  { title: 'Nextgov/FCW',         cat: 'federal', url: 'https://www.nextgov.com/rss/all/' },
+  { title: 'MeriTalk',            cat: 'federal', url: 'https://www.meritalk.com/feed/' },
+  { title: 'Federal News Network', cat: 'federal', url: 'https://federalnewsnetwork.com/feed/' },
+  { title: 'FedTech Magazine',    cat: 'federal', url: 'https://fedtechmagazine.com/rss.xml' },
+  { title: 'Federal IT Watch',    cat: 'federal', url: 'https://news.google.com/rss/search?q=federal+%22IT+modernization%22+OR+FedRAMP+OR+%22federal+CIO%22+OR+%22government+cloud%22&hl=en-US&gl=US&ceid=US:en' },
 
-  // Exploits & Vulnerabilities
-  { title: 'Zero Day Initiative', cat: 'exploits', url: 'https://www.zerodayinitiative.com/rss/published/' },
-  { title: 'Exploit-DB',          cat: 'exploits', url: 'https://www.exploit-db.com/rss.xml' },
-  { title: 'Full Disclosure',     cat: 'exploits', url: 'https://seclists.org/rss/fulldisclosure.rss' },
-  { title: 'Rapid7 Blog',         cat: 'exploits', url: 'https://www.rapid7.com/blog/rss/' },
-  { title: 'Tenable Blog',        cat: 'exploits', url: 'https://www.tenable.com/blog/feed' },
+  // State & Local IT
+  { title: 'StateScoop',          cat: 'statelocal', url: 'https://statescoop.com/feed/' },
+  { title: 'Route Fifty',         cat: 'statelocal', url: 'https://www.route-fifty.com/rss/all/' },
+  { title: 'StateTech Magazine',  cat: 'statelocal', url: 'https://statetechmagazine.com/rss.xml' },
+  { title: 'State & Local IT Watch', cat: 'statelocal', url: 'https://news.google.com/rss/search?q=%22state+government%22+OR+%22local+government%22+IT+OR+%22digital+services%22+OR+cybersecurity&hl=en-US&gl=US&ceid=US:en' },
 
-  // Windows / Microsoft
-  { title: 'Microsoft Security',  cat: 'windows', url: 'https://www.microsoft.com/en-us/security/blog/feed/' },
-  { title: '0patch Blog',         cat: 'windows', url: 'https://blog.0patch.com/feeds/posts/default' },
-  { title: 'Google Project Zero', cat: 'windows', url: 'https://googleprojectzero.blogspot.com/feeds/posts/default' },
-  { title: 'Windows Exploit Watch', cat: 'windows', url: 'https://news.google.com/rss/search?q=%22Patch+Tuesday%22+OR+%22Windows+zero-day%22+OR+%22Windows+vulnerability%22+OR+%22Windows+exploit%22&hl=en-US&gl=US&ceid=US:en' },
+  // Cybersecurity — gov-relevant
+  { title: 'Nextgov Cybersecurity', cat: 'cyber', url: 'https://www.nextgov.com/rss/cybersecurity/' },
+  { title: 'The Record',          cat: 'cyber', url: 'https://therecord.media/feed/' },
+  { title: 'BleepingComputer',    cat: 'cyber', url: 'https://www.bleepingcomputer.com/feed/' },
+  { title: 'The Hacker News',     cat: 'cyber', url: 'https://feeds.feedburner.com/TheHackersNews' },
+  { title: 'Krebs on Security',   cat: 'cyber', url: 'https://krebsonsecurity.com/feed/' },
+  { title: 'Dark Reading',        cat: 'cyber', url: 'https://www.darkreading.com/rss.xml' },
 
-  // Enterprise Security
-  { title: 'Dark Reading',        cat: 'enterprise', url: 'https://www.darkreading.com/rss.xml' },
-  { title: 'CSO Online',          cat: 'enterprise', url: 'https://www.csoonline.com/feed/' },
-  { title: 'Infosecurity Mag',    cat: 'enterprise', url: 'https://www.infosecurity-magazine.com/rss/news/' },
-  { title: 'Help Net Security',   cat: 'enterprise', url: 'https://www.helpnetsecurity.com/feed/' },
-  { title: 'GBHackers',           cat: 'enterprise', url: 'https://gbhackers.com/feed/' },
-  { title: 'Enterprise Ransomware', cat: 'enterprise', url: 'https://news.google.com/rss/search?q=ransomware+enterprise+breach+OR+CISO+OR+%22data+breach%22&hl=en-US&gl=US&ceid=US:en' },
+  // Policy & Oversight — leadership, budget, workforce
+  { title: 'Government Executive', cat: 'policy', url: 'https://www.govexec.com/rss/all/' },
+  { title: 'CyberScoop',          cat: 'policy', url: 'https://cyberscoop.com/feed/' },
+  { title: 'Federal Policy Watch', cat: 'policy', url: 'https://news.google.com/rss/search?q=%22federal+IT%22+oversight+OR+GAO+OR+%22IT+budget%22+OR+%22executive+order%22+technology+OR+%22government+AI%22&hl=en-US&gl=US&ceid=US:en' },
 
-  // Threat Intel & Research
-  { title: 'Cisco Talos',         cat: 'intel', url: 'https://blog.talosintelligence.com/rss/' },
-  { title: 'Palo Alto Unit 42',   cat: 'intel', url: 'https://unit42.paloaltonetworks.com/feed/' },
-  { title: 'Check Point Research', cat: 'intel', url: 'https://research.checkpoint.com/feed/' },
-  { title: 'Securelist (Kaspersky)', cat: 'intel', url: 'https://securelist.com/feed/' },
-  { title: 'WeLiveSecurity (ESET)', cat: 'intel', url: 'https://www.welivesecurity.com/en/rss/feed/' },
-  { title: 'Malwarebytes Labs',   cat: 'intel', url: 'https://www.malwarebytes.com/blog/feed/index.xml' },
-  { title: 'Schneier on Security', cat: 'intel', url: 'https://www.schneier.com/feed/atom/' },
-
-  // Official Advisories & Alerts
+  // Advisories & Alerts — official
   { title: 'CISA Advisories',     cat: 'advisories', url: 'https://www.cisa.gov/cybersecurity-advisories/all.xml' },
+  { title: 'CISA News',           cat: 'advisories', url: 'https://www.cisa.gov/news.xml' },
+  { title: 'Zero Day Initiative', cat: 'advisories', url: 'https://www.zerodayinitiative.com/rss/published/' },
   { title: 'SANS Internet Storm Center', cat: 'advisories', url: 'https://isc.sans.edu/rssfeed_full.xml' },
   { title: 'NCSC UK',             cat: 'advisories', url: 'https://www.ncsc.gov.uk/api/1/services/v1/all-rss-feed.xml' },
 ];
 
-const CAT_ORDER  = ['top','news','exploits','windows','enterprise','intel','advisories'];
+const CAT_ORDER  = ['top','federal','statelocal','cyber','policy','advisories'];
 const CAT_LABELS = {
-  top: 'Top Stories', news: 'Threat News', exploits: 'Exploits & CVEs',
-  windows: 'Windows', enterprise: 'Enterprise', intel: 'Threat Intel',
-  advisories: 'Advisories'
+  top: 'The Briefing', federal: 'Federal IT', statelocal: 'State & Local',
+  cyber: 'Cybersecurity', policy: 'Policy & Oversight', advisories: 'Advisories'
 };
 
 // ── NAV ────────────────────────────────────────────
@@ -439,7 +459,7 @@ function parseOPML(xml) {
 }
 
 // ── CACHE ──────────────────────────────────────────
-const CACHE_KEY = 'thebreach_cache_v1';
+const CACHE_KEY = 'thebriefing_cache_v1';
 const CACHE_TTL = 30 * 60 * 1000;
 function saveCache(arr) {
   try { localStorage.setItem(CACHE_KEY, JSON.stringify({ ts: Date.now(),
@@ -582,7 +602,7 @@ function renderTop(list, now) {
   const rest = list.filter(i => !leadSet.has(i)).slice(0, 60);
   let html = '<div class="lead">';
   lead.forEach(i => { const f = threatFlag(i.title); html += `<a href="${escAttr(i.link)}" target="_blank" rel="noopener">
-    <span class="meta">${f ? `<span class="flag">${f}</span> ` : ''}${esc(i.source)} · ${fmtAge(now - i.date.getTime(), i.date)}</span>
+    <span class="meta">${f ? `<span class="flag ${flagClass(f)}">${f}</span> ` : ''}${esc(i.source)} · ${fmtAge(now - i.date.getTime(), i.date)}</span>
     <span class="head">${esc(i.title)}</span></a>`; });
   html += '</div><div id="top-rest">';
   rest.forEach(i => html += storyRow(i, now));
@@ -609,21 +629,35 @@ function storyRow(i, now) {
   const isNew = age < 3600000 && i.date.getTime() > 0;
   const flag = threatFlag(i.title);
   return `<a class="story" href="${escAttr(i.link)}" target="_blank" rel="noopener">
-    <span class="meta">${flag ? `<span class="flag">${flag}</span> ` : ''}${esc(i.source)} · ${fmtAge(age, i.date)}${isNew ? ' · <span class="new">NEW</span>' : ''}</span>
+    <span class="meta">${flag ? `<span class="flag ${flagClass(flag)}">${flag}</span> ` : ''}${esc(i.source)} · ${fmtAge(age, i.date)}${isNew ? ' · <span class="new">NEW</span>' : ''}</span>
     <span class="head">${esc(i.title)}</span></a>`;
 }
 
-// tag headlines by threat keyword — gives the security wire its teeth
+// tag headlines by what a public-sector IT leader triages first
 function threatFlag(title) {
   const t = title.toLowerCase();
+  // urgent security (red)
   if (/zero[\s-]?day|0[\s-]?day/.test(t)) return 'ZERO-DAY';
   if (/actively exploited|exploited in the wild|in-the-wild|under active/.test(t)) return 'EXPLOITED';
-  if (/\brce\b|remote code execution/.test(t)) return 'RCE';
   if (/ransomware/.test(t)) return 'RANSOMWARE';
-  if (/\bcritical\b/.test(t)) return 'CRITICAL';
+  if (/\bbreach|data breach|hacked|compromise/.test(t)) return 'BREACH';
+  // policy & oversight (navy)
+  if (/emergency directive|binding operational|\bbod\b|executive order|\bmandate|\bmemo\b/.test(t)) return 'DIRECTIVE';
+  if (/fedramp/.test(t)) return 'FEDRAMP';
+  if (/\bgao\b|inspector general|oversight|\baudit\b/.test(t)) return 'OVERSIGHT';
+  if (/budget|appropriat|funding|shutdown/.test(t)) return 'BUDGET';
+  // modernization priorities (gold)
+  if (/zero[\s-]?trust/.test(t)) return 'ZERO-TRUST';
+  if (/\bai\b|artificial intelligence|generative/.test(t)) return 'AI';
+  if (/cloud migration|\bcloud\b/.test(t)) return 'CLOUD';
+  // vuln (red)
   if (/cve-\d{4}-\d+/i.test(title)) return 'CVE';
-  if (/\bapt\d|nation[\s-]?state|threat actor/.test(t)) return 'APT';
-  if (/patch tuesday/.test(t)) return 'PATCH';
+  if (/\bcritical\b/.test(t)) return 'CRITICAL';
+  return '';
+}
+function flagClass(f) {
+  if (['DIRECTIVE','FEDRAMP','OVERSIGHT','BUDGET'].includes(f)) return 'policy';
+  if (['ZERO-TRUST','AI','CLOUD'].includes(f)) return 'tech';
   return '';
 }
 function groupBy(arr, key) {
