@@ -41,21 +41,6 @@ body {
 
 #wrap { max-width: 1340px; margin: 0 auto; background: var(--paper); box-shadow: 0 0 0 1px var(--rule), 0 18px 50px -30px rgba(10,49,97,.5); }
 
-/* ── GOV BANNER STRIP ───────────────────────────── */
-#gov-strip {
-  background: var(--navy-deep);
-  color: #c9d6ea;
-  font-size: 11px;
-  letter-spacing: .5px;
-  padding: 5px 20px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-#gov-strip b { color: #fff; font-weight: 600; }
-#gov-strip .seal { color: var(--gold); font-size: 12px; }
-#gov-strip .right { margin-left: auto; color: #8ea3c4; letter-spacing: 1px; }
-
 /* ── MASTHEAD ───────────────────────────────────── */
 #masthead {
   text-align: center;
@@ -259,19 +244,12 @@ body {
 
 @media (max-width: 760px) {
   #status { display: none; }
-  #gov-strip .right { display: none; }
   #view { padding: 16px 16px 40px; }
 }
 </style>
 </head>
 <body>
 <div id="wrap">
-
-  <div id="gov-strip">
-    <span class="seal">&#9733;</span>
-    <span>A daily intelligence brief for <b>public-sector technology leadership</b></span>
-    <span class="right">CIO &middot; CISO &middot; IT DIRECTOR EDITION</span>
-  </div>
 
   <header id="masthead">
     <div class="kicker">Government IT &middot; Modernization &middot; Cybersecurity &middot; Policy &amp; Oversight</div>
